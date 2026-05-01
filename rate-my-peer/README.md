@@ -1,16 +1,38 @@
-# React + Vite
+# Rate My Peer Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+React + Vite frontend scaffold for a peer-rating platform focused on project accountability.
 
-Currently, two official plugins are available:
+## Implemented pages
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- Landing page with hero search
+- Search results page with student cards
+- Student profile page with aggregate rating, course breakdown, attributes, and review feed
+- Write review page with selectable attribute chips
 
-## React Compiler
+## Components included
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- `Layout`
+- `SearchBar`
+- `StudentCard`
+- `RatingStars` (fractional support)
+- `AttributeTag`
+- `ReviewForm`
 
-## Expanding the ESLint configuration
+## Local development
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+```bash
+npm install
+npm run dev
+```
+
+## Build and lint
+
+```bash
+npm run build
+npm run lint
+```
+
+## Data source
+
+Mock student data currently lives in `src/data/mockStudents.js`.
+You can swap this to API data later with minimal changes through `src/context/StudentContext.jsx`.
