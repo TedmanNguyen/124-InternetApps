@@ -17,10 +17,10 @@ export default function Layout() {
           </NavLink>
 
           <div className="header-links">
-            <NavLink to="/" end>
+            <NavLink to="/" end className="header-link">
               Search
             </NavLink>
-            <NavLink to="/student/123">Profile</NavLink>
+            <NavLink to="/student/123" className='header-link'>Profile</NavLink>
             <button type="button" className="ghost-button">
               Logout
             </button>

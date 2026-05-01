@@ -93,6 +93,13 @@ a {
   color: var(--navy);
 }
 
+.header-links a:hover, .ghost-button:hover {
+  transform: scale(1.1);
+  transition: transform 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+  border-color: var(--navy);
+  color: var(--navy);
+}
+
 .ghost-button {
   cursor: pointer;
 }
@@ -380,3 +387,4 @@ a {
   text-align: center;
   color: var(--slate-400);
 }
+
