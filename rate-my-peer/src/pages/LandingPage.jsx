@@ -7,10 +7,6 @@ export default function LandingPage() {
   const { students } = useStudents()
   const navigate = useNavigate()
 
-  const topRated = [...students]
-    .sort((a, b) => b.reviews.length - a.reviews.length)
-    .slice(0, 3)
-
   return (
     <section className="page landing-page">
       <div className="hero-block">
@@ -27,14 +23,6 @@ export default function LandingPage() {
         />
       </div>
 
-      <div className="section-header">
-        <h2>Popular Profiles</h2>
-      </div>
-      <div className="card-grid">
-        {topRated.map((student) => (
-          <StudentCard key={student.id} student={student} />
-        ))}
-      </div>
     </section>
   )
 }
