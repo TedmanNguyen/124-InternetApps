@@ -10,6 +10,10 @@
   --positive-text: #166534;
   --negative-bg: #ffe4e6;
   --negative-text: #9f1239;
+  --neutral-bg: #f3f4f6;
+  --neutral-text: #374151;
+  --semi-neutral-bg: #f7f7b2;
+  --semi-neutral-text: #605c12;
   --gold: #f59e0b;
   --shadow: 0 10px 30px rgba(15, 39, 71, 0.08);
 }

@@ -82,3 +82,6 @@ export const mockStudents = [
   },
 ]
 
+export function pullStudentsGivenId(studentId) {
+  return mockStudents.find(student => student.id === studentId);
+}

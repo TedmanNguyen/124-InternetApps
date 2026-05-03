@@ -17,6 +17,9 @@ export default function Layout() {
           </NavLink>
 
           <div className="header-links">
+            <NavLink to='/admin-dashboard' className='header-link'>
+              Admin Dashboard
+            </NavLink>
             <NavLink to="/" end className="header-link">
               Search
             </NavLink>

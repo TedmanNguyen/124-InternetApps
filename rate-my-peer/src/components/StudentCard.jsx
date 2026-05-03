@@ -10,7 +10,7 @@ export default function StudentCard({ student }) {
 
   return (
     <article className="student-card">
-      <div className="avatar">{student.firstName[0]}{student.lastName[0]}</div>
+\      <div className="avatar">{student.firstName[0]}{student.lastName[0]}</div>
       <h3>{name}</h3>
       <p>{student.major}</p>
       <p className="muted">{student.email}</p>

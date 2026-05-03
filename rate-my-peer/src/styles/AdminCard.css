@@ -1,0 +1,45 @@
+.admin-card {
+    border: 2px solid black;
+    border-width: 2px;
+    padding: 1rem;
+    border-radius: 8px;
+}
+
+.emails-and-id, .dates {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.status-container {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+}
+
+.status-badge {
+    border: 1px solid black;
+    padding: 0.25rem 0.5rem;
+    border-radius: 20px;
+    font-size: 0.8rem;
+}
+
+.status-pending {
+    background: var(--neutral-bg);
+    color: var(--neutral-text);
+}
+
+.status-under-review {
+    background: var(--semi-neutral-bg);
+    color: var(--semi-neutral-text);
+}
+
+.status-resolved {
+    background: var(--positive-bg);
+    color: var(--positive-text);
+}
+
+.status-dismissed {
+    background: var(--negative-bg);
+    color: var(--negative-text);
+}
