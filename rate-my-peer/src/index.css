@@ -76,13 +76,13 @@ a {
   text-decoration: none;
 }
 
-.header-links {
+.header-links{
   display: flex;
   gap: 0.8rem;
   align-items: center;
 }
 
-.header-links a,
+.header-links a, .admin-tabs a,
 .ghost-button {
   border: 1px solid var(--slate-200);
   border-radius: 999px;
@@ -92,12 +92,12 @@ a {
   background: var(--white);
 }
 
-.header-links a.active {
+.header-links a.active, .admin-tabs a.active {
   border-color: var(--navy);
   color: var(--navy);
 }
 
-.header-links a:hover, .ghost-button:hover {
+.header-links a:hover, .admin-tabs a:hover, .ghost-button:hover {
   transform: scale(1.1);
   transition: transform 0.2s ease, color 0.2s ease, border-color 0.2s ease;
   border-color: var(--navy);
