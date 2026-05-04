@@ -4,11 +4,13 @@ import ReviewCard from "./ReviewCard";
 import {pullStudentsGivenId} from "../data/mockStudents";
 import "../styles/AdminCard.css"
 import { useState } from "react";
+import { updateReportStatus } from "../data/mockReports";
 
 export default function AdminCard({report}) {
     const review = pullReviewsGivenId(report.reviewId)
     const reviewer = pullStudentsGivenId(review.reviewerId)
     const reporter = pullStudentsGivenId(report.reporterId)
+
     return (
         <div className="admin-card">
             <ReviewCard review={review} />
@@ -23,7 +25,7 @@ export default function AdminCard({report}) {
                 <p><strong>Details:</strong> {report.details}</p>
                 <div className="status-container">
                     <p><strong>Status:</strong></p>
-                    <StatusBadge currentStatus={report.status} />
+                    <StatusBadge currentStatus={reportStatus.indexOf(report.status)} report={report} />
                 </div>
                 <div className='dates'>
                     <p><strong>Created At:</strong> {new Date(report.createdAt).toLocaleString()}</p>
@@ -34,11 +36,24 @@ export default function AdminCard({report}) {
     )
 }
 
-function StatusBadge({currentStatus}) {
+function StatusBadge({currentStatus, report}) {
     const [status, setStatus] = useState(currentStatus)
+
+    const changeStatus = () => {
+        setStatus(prev => (prev + 1) % reportStatus.length)
+    }
+
+    const onClick = () => {
+        setStatus(prev => (prev + 1) % reportStatus.length)
+        updateReportStatus(report.id, reportStatus[(status + 1) % reportStatus.length])
+        // send the new status to the database
+    }
+
     return (
-        <div className={`status-badge status-${status.toLowerCase().replace(' ', '-')}`}>
-            <span>{status}</span>
-        </div>
+        <>
+            <button className={`status-badge status-${reportStatus[status].toLowerCase().replace(' ', '-')}`} onClick={onClick}>
+                {reportStatus[status]}
+            </button>
+        </>
     )
 }

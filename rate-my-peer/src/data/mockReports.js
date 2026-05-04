@@ -14,3 +14,13 @@ const mockReports = [
 export default function pullReports() {
     return mockReports
 }
+
+export function updateReportStatus(reportId, newStatus) {
+    // replace this function with an API call to update the report status in the database
+    const reportIndex = mockReports.findIndex(report => report.id === reportId);
+    if (reportIndex !== -1) {
+        mockReports[reportIndex].status = newStatus;
+        mockReports[reportIndex].updatedAt = new Date().toISOString();
+    }
+    console.log(mockReports)
+}

@@ -24,6 +24,16 @@
     font-size: 0.8rem;
 }
 
+.status-badge:hover {
+    cursor: pointer;
+    opacity: 0.8;
+}
+
+.status-badge:active {
+    transform: scale(0.95);
+    transition: transform 0.1s ease;
+}
+
 .status-pending {
     background: var(--neutral-bg);
     color: var(--neutral-text);
