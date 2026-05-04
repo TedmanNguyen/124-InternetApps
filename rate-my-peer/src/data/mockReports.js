@@ -22,5 +22,14 @@ export function updateReportStatus(reportId, newStatus) {
         mockReports[reportIndex].status = newStatus;
         mockReports[reportIndex].updatedAt = new Date().toISOString();
     }
+    // console.log(mockReports)
+}
+
+export function deleteReport(reportId) {
+    // replace this function with an API call to delete the report from the database
+    const reportIndex = mockReports.findIndex(report => report.id === reportId);
+    if (reportIndex !== -1) {
+        mockReports.splice(reportIndex, 1);
+    }
     console.log(mockReports)
 }

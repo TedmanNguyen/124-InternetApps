@@ -8,12 +8,15 @@ import {
   getDisplayName,
   getTopAttributes,
 } from '../utils/studentMetrics'
+import ReviewCard from '../components/ReviewCard'
+import { pullReviewsGivenRevieweeId } from '../data/mockReviews'
 
 export default function ProfilePage() {
   const { studentId } = useParams()
   const { getStudentById } = useStudents()
 
   const student = getStudentById(studentId)
+  const reviews = pullReviewsGivenRevieweeId(studentId)
 
   if (!student) {
     return <p className="empty-state">Student profile not found.</p>
@@ -76,19 +79,8 @@ export default function ProfilePage() {
       <section className="panel">
         <h2>Recent Reviews</h2>
         <div className="review-list">
-          {student.reviews.map((review) => (
-            <article key={review.id} className="review-item">
-              <header>
-                <strong>{review.course}</strong>
-                <span>{review.rating}.0 / 5</span>
-              </header>
-              <p>{review.comment}</p>
-              <div className="tag-row">
-                {review.attributes.map((attribute) => (
-                  <AttributeTag key={`${review.id}-${attribute}`} label={attribute} />
-                ))}
-              </div>
-            </article>
+          {reviews.map((review) => (
+            <ReviewCard key={review.id} review={review} />
           ))}
         </div>
       </section>

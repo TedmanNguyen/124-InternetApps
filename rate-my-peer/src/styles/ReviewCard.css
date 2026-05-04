@@ -1,0 +1,16 @@
+.reviewer-info {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+}
+
+.left-side-header {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+}
+
+.review-header {
+    display: flex;
+    align-items: center;
+}

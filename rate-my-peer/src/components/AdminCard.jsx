@@ -5,7 +5,7 @@ import {pullStudentsGivenId} from "../data/mockStudents";
 import "../styles/AdminCard.css"
 import { useState } from "react";
 import { updateReportStatus } from "../data/mockReports";
-
+import { deleteReview } from "../data/mockReviews";
 export default function AdminCard({report}) {
     const review = pullReviewsGivenId(report.reviewId)
     const reviewer = pullStudentsGivenId(review.reviewerId)
@@ -27,9 +27,13 @@ export default function AdminCard({report}) {
                     <p><strong>Status:</strong></p>
                     <StatusBadge currentStatus={reportStatus.indexOf(report.status)} report={report} />
                 </div>
-                <div className='dates'>
-                    <p><strong>Created At:</strong> {new Date(report.createdAt).toLocaleString()}</p>
-                    <p><strong>Updated At:</strong> {new Date(report.updatedAt).toLocaleString()}</p>
+                <div className='bottom-row-admin-card'>
+                    <div className='dates'>
+                        <p><strong>Created At:</strong> {new Date(report.createdAt).toLocaleString()}</p>
+                        <p><strong>Updated At:</strong> {new Date(report.updatedAt).toLocaleString()}</p>
+                    </div>
+                    <button className='delete-review-button' onClick={() => {deleteReview(report.reviewId); /*deleteReport(report.id)*/
+                    }}>Delete Review</button>
                 </div>
             </div>
         </div>

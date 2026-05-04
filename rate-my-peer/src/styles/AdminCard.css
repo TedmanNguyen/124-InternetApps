@@ -5,6 +5,13 @@
     border-radius: 8px;
 }
 
+.bottom-row-admin-card {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 1rem;
+}
+
 .emails-and-id, .dates {
     display: flex;
     gap: 1rem;
@@ -24,12 +31,21 @@
     font-size: 0.8rem;
 }
 
-.status-badge:hover {
+.delete-review-button {
+    font-size: 1rem;
+    background: var(--negative-bg);
+    color: var(--negative-text);
+    border: 1px solid black;
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+}
+
+.status-badge:hover, .delete-review-button:hover {
     cursor: pointer;
     opacity: 0.8;
 }
 
-.status-badge:active {
+.status-badge:active, .delete-review-button:active {
     transform: scale(0.95);
     transition: transform 0.1s ease;
 }
