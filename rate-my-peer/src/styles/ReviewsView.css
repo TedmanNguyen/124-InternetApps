@@ -1,0 +1,14 @@
+.review-card-container {
+    padding: 1rem;
+    border-radius: 8px;
+    border: 1px solid black;
+    margin-bottom: 1rem;
+}
+
+.bottom-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 1rem;
+    margin-bottom: 0.5rem;;
+}

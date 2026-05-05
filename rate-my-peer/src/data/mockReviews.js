@@ -83,4 +83,13 @@ export function pullReviewsGivenRevieweeId(revieweeId) {
   return mockReviews.filter(review => review.revieweeId === revieweeId);
 }
 
+export function pullReviewsGivenReviwerId(reviewerId) {
+  return mockReviews.filter(review => review.reviewerId === reviewerId);
+}
+
+export function pullAllReviews() {
+    return mockReviews;
+}
+
+
 export default mockReviews

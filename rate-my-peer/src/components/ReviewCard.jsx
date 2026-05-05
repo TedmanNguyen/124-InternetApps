@@ -3,7 +3,7 @@ import { pullStudentsGivenId } from "../data/mockStudents"
 import "../styles/ReviewCard.css"
 
 export default function ReviewCard({ review }) {
-    // console.log(review.reviewerId)
+    console.log(review.reviewerId)
     const reviewer = pullStudentsGivenId(review.reviewerId)
     return (
         <article key={review.id} className="review-item">
