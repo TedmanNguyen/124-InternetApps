@@ -6,7 +6,9 @@ import "../styles/AdminCard.css"
 import { useState } from "react";
 import { updateReportStatus } from "../data/mockReports";
 import { deleteReview } from "../data/mockReviews";
+
 export default function AdminCard({report}) {
+    const [status, setStatus] = useState(reportStatus.indexOf(report.status))
     const review = pullReviewsGivenId(report.reviewId)
     const reviewer = pullStudentsGivenId(review.reviewerId)
     const reporter = pullStudentsGivenId(report.reporterId)
@@ -25,7 +27,7 @@ export default function AdminCard({report}) {
                 <p><strong>Details:</strong> {report.details}</p>
                 <div className="status-container">
                     <p><strong>Status:</strong></p>
-                    <StatusBadge currentStatus={reportStatus.indexOf(report.status)} report={report} />
+                    <StatusBadge currentStatus={status} setStatus={setStatus} report={report} />
                 </div>
                 <div className='bottom-row-admin-card'>
                     <div className='dates'>
@@ -40,8 +42,7 @@ export default function AdminCard({report}) {
     )
 }
 
-function StatusBadge({currentStatus, report}) {
-    const [status, setStatus] = useState(currentStatus)
+export function StatusBadge({currentStatus, setStatus, report}) {
 
     const changeStatus = () => {
         setStatus(prev => (prev + 1) % reportStatus.length)
@@ -52,11 +53,11 @@ function StatusBadge({currentStatus, report}) {
         updateReportStatus(report.id, reportStatus[(status + 1) % reportStatus.length])
         // send the new status to the database
     }
-
+    
     return (
         <>
-            <button className={`status-badge status-${reportStatus[status].toLowerCase().replace(' ', '-')}`} onClick={onClick}>
-                {reportStatus[status]}
+            <button className={`status-badge status-${reportStatus[currentStatus].toLowerCase().replace(' ', '-')}`} onClick={onClick}>
+                {reportStatus[currentStatus]}
             </button>
         </>
     )

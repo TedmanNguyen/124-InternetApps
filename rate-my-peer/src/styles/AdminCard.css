@@ -24,7 +24,7 @@
     align-items: center;
 }
 
-.status-badge {
+.status-badge, .status-filter-badge {
     border: 1px solid black;
     padding: 0.25rem 0.5rem;
     border-radius: 20px;
@@ -40,13 +40,15 @@
     border-radius: 20px;
 }
 
-.status-badge:hover, .delete-review-button:hover {
+.status-badge:hover, .status-filter-badge:hover, .delete-review-button:hover {
     cursor: pointer;
-    opacity: 0.8;
+    opacity: 0.5;
+    transform: scale(1.05);
+    transition: transform 0.1s ease;
 }
 
-.status-badge:active, .delete-review-button:active {
-    transform: scale(0.95);
+.status-badge:active, .status-filter-badge:active, .delete-review-button:active {
+    transform: scale(1.15);
     transition: transform 0.1s ease;
 }
 

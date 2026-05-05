@@ -4,3 +4,33 @@
     margin-bottom: 1rem;
 }
 
+.status-filter {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+}
+
+.filter-container {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+}
+
+.apply-filter-button {
+    font-size: 1rem;
+    border: 1px solid black;
+    padding: 0.25rem 1rem;
+    border-radius: 20px;
+}
+
+.apply-filter-button:hover {
+    cursor: pointer;
+    opacity: 0.5;
+    transform: scale(1.05);
+    transition: transform 0.1s ease;
+}
+
+.apply-filter-button:active {
+    transform: scale(1.15);
+    transition: transform 0.1s ease;
+}
