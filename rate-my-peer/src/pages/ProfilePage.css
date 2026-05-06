@@ -1,0 +1,417 @@
+/* Profile Page Styling */
+
+.profile-page {
+  max-width: 800px;
+}
+
+/* Header Section */
+.profile-header-section {
+  padding: 1.5rem;
+  background: var(--white);
+  border: 1px solid var(--slate-200);
+  border-radius: 14px;
+  box-shadow: var(--shadow);
+  margin-bottom: 1rem;
+}
+
+.profile-greeting {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--navy);
+  margin: 0 0 1rem 0;
+}
+
+/* Tab Navigation */
+.profile-tabs {
+  display: flex;
+  gap: 0.5rem;
+  border-bottom: 2px solid var(--slate-200);
+  background: var(--white);
+  border: 1px solid var(--slate-200);
+  border-radius: 14px 14px 0 0;
+  padding: 0.5rem;
+  margin-bottom: 0;
+}
+
+.tab-button {
+  flex: 1;
+  padding: 0.8rem 1rem;
+  background: transparent;
+  border: none;
+  color: var(--slate-700);
+  font-weight: 600;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border-bottom: 3px solid transparent;
+  border-radius: 8px 8px 0 0;
+  position: relative;
+}
+
+.tab-button:hover {
+  color: var(--navy);
+  background: var(--slate-100);
+}
+
+.tab-button.active {
+  color: var(--navy);
+  background: var(--slate-100);
+}
+
+.tab-button.active::after {
+  content: '';
+  position: absolute;
+  bottom: -0.5rem;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: var(--navy);
+  border-radius: 3px;
+}
+
+/* Tab Content */
+.tab-content {
+  background: var(--white);
+  border: 1px solid var(--slate-200);
+  border-radius: 0 0 14px 14px;
+  border-top: none;
+}
+
+/* Profile Panel */
+.profile-panel {
+  border-radius: 0 0 14px 14px;
+  border-top: none;
+}
+
+.profile-panel-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--slate-200);
+}
+
+.profile-panel-header h2 {
+  margin: 0;
+  color: var(--navy);
+}
+
+.edit-button {
+  background: var(--slate-100);
+  border: 1px solid var(--slate-200);
+  color: var(--navy);
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.edit-button:hover {
+  background: var(--slate-200);
+  border-color: var(--navy);
+  transform: scale(1.05);
+}
+
+/* Profile Display */
+.profile-display {
+  display: grid;
+  gap: 1rem;
+}
+
+.profile-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.profile-row:last-child {
+  grid-template-columns: 1fr;
+}
+
+.profile-field {
+  padding: 1rem;
+  background: var(--slate-100);
+  border-radius: 10px;
+  border: 1px solid var(--slate-200);
+}
+
+.profile-field label {
+  display: block;
+  font-weight: 600;
+  color: var(--slate-700);
+  margin-bottom: 0.4rem;
+  font-size: 0.9rem;
+}
+
+.profile-field p {
+  margin: 0;
+  color: var(--navy);
+  font-size: 1rem;
+}
+
+/* Profile Form */
+.profile-form {
+  display: grid;
+  gap: 1rem;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.form-row:last-of-type {
+  grid-template-columns: 1fr;
+}
+
+.form-group {
+  display: grid;
+  gap: 0.45rem;
+}
+
+.form-group label {
+  font-weight: 600;
+  color: var(--slate-700);
+}
+
+.form-group input {
+  border: 1px solid var(--slate-200);
+  border-radius: 10px;
+  padding: 0.7rem;
+  font: inherit;
+  transition: border-color 0.2s ease;
+}
+
+.form-group input:focus {
+  outline: none;
+  border-color: var(--navy);
+  box-shadow: 0 0 0 3px rgba(15, 39, 71, 0.1);
+}
+
+.form-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--slate-200);
+}
+
+.save-button,
+.cancel-button {
+  padding: 0.7rem 1rem;
+  border: none;
+  border-radius: 10px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.save-button {
+  background: var(--navy);
+  color: var(--white);
+}
+
+.save-button:hover {
+  background: var(--navy-soft);
+  transform: scale(1.02);
+}
+
+.cancel-button {
+  background: var(--slate-200);
+  color: var(--navy);
+  border: 1px solid var(--slate-300);
+}
+
+.cancel-button:hover {
+  background: var(--slate-300);
+  transform: scale(1.02);
+}
+
+/* Reviews Section */
+.reviews-section {
+  display: grid;
+  gap: 1rem;
+  border-radius: 0 0 14px 14px;
+  border-top: none;
+}
+
+.reviews-subsection {
+  border-radius: 0;
+  border-top: 1px solid var(--slate-200);
+}
+
+.reviews-subsection:first-child {
+  border-radius: 0 0 0 0;
+  border-top: none;
+}
+
+.reviews-subsection:last-child {
+  border-radius: 0 0 14px 14px;
+}
+
+.aggregate-score {
+  background: var(--positive-bg);
+  border-left: 4px solid var(--positive-text);
+  padding: 1rem;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+}
+
+.aggregate-score p {
+  margin: 0;
+  color: var(--positive-text);
+  font-weight: 600;
+}
+
+.aggregate-score strong {
+  font-size: 1.2rem;
+}
+
+/* Settings Panel */
+.settings-panel {
+  border-radius: 0 0 14px 14px;
+  border-top: none;
+}
+
+.settings-section {
+  padding: 1rem 0;
+  border-bottom: 1px solid var(--slate-200);
+}
+
+.settings-section:last-child {
+  border-bottom: none;
+}
+
+.settings-section h3 {
+  margin: 0 0 1rem 0;
+  color: var(--navy);
+  font-size: 1rem;
+}
+
+.setting-button {
+  display: block;
+  width: 100%;
+  text-align: left;
+  padding: 0.8rem 0;
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid var(--slate-200);
+  color: var(--navy);
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.setting-button:hover {
+  color: var(--navy-soft);
+  transform: translateX(4px);
+}
+
+.setting-button:last-of-type {
+  border-bottom: none;
+}
+
+.toggle-option {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  padding: 0.8rem 0;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.toggle-option:hover {
+  color: var(--navy);
+}
+
+.toggle-option input[type='checkbox'] {
+  width: 18px;
+  height: 18px;
+  cursor: pointer;
+  accent-color: var(--navy);
+  flex-shrink: 0;
+}
+
+.toggle-option span {
+  color: var(--slate-700);
+}
+
+.toggle-option input[type='checkbox']:checked + span {
+  color: var(--navy);
+  font-weight: 600;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .profile-page {
+    max-width: 100%;
+  }
+
+  .profile-greeting {
+    font-size: 1.5rem;
+  }
+
+  .profile-tabs {
+    flex-direction: column;
+  }
+
+  .tab-button {
+    border-radius: 8px;
+    border-bottom: none;
+  }
+
+  .tab-button.active::after {
+    display: none;
+  }
+
+  .tab-button.active {
+    background: var(--navy);
+    color: var(--white);
+  }
+
+  .profile-row {
+    grid-template-columns: 1fr;
+  }
+
+  .form-row {
+    grid-template-columns: 1fr;
+  }
+
+  .form-actions {
+    grid-template-columns: 1fr;
+  }
+
+  .tab-content {
+    border-radius: 14px;
+    border-top: 1px solid var(--slate-200);
+  }
+
+  .profile-panel {
+    border-radius: 14px;
+    border-top: 1px solid var(--slate-200);
+  }
+
+  .reviews-subsection {
+    border-radius: 14px;
+    border-top: 1px solid var(--slate-200);
+    margin-top: 1rem;
+  }
+
+  .reviews-subsection:first-child {
+    border-radius: 14px;
+    border-top: 1px solid var(--slate-200);
+  }
+
+  .reviews-subsection:last-child {
+    border-radius: 14px;
+  }
+
+  .settings-panel {
+    border-radius: 14px;
+    border-top: 1px solid var(--slate-200);
+  }
+}

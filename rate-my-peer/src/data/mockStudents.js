@@ -13,7 +13,9 @@ export const mockStudents = [
     firstName: 'John',
     lastName: 'Doe',
     email: 'john.doe@school.edu',
+    school: 'UC Irvine',
     major: 'Computer Science',
+    graduationYear: 2024,
     profilePic: null,
     reviews: [
       {
@@ -37,7 +39,9 @@ export const mockStudents = [
     firstName: 'Maya',
     lastName: 'Patel',
     email: 'maya.patel@school.edu',
+    school: 'UC Berkeley',
     major: 'Software Engineering',
+    graduationYear: 2025,
     profilePic: null,
     reviews: [
       {
@@ -61,7 +65,9 @@ export const mockStudents = [
     firstName: 'Leo',
     lastName: 'Garcia',
     email: 'leo.garcia@school.edu',
+    school: 'Stanford University',
     major: 'Data Science',
+    graduationYear: 2026,
     profilePic: null,
     reviews: [
       {

@@ -440,3 +440,32 @@ a {
   box-shadow: 0 0 0 3px rgba(15, 39, 71, 0.1);
 }
 
+
+.star-icon {
+  position: relative;
+  display: inline-block;
+  width: 24px; /* Adjust based on your preferred size */
+  height: 24px;
+}
+
+.star-base {
+  fill: #e0e0e0; /* The empty gray color */
+  width: 100%;
+  height: 100%;
+}
+
+.star-fill {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  overflow: hidden; /* This is the "clipper" */
+  display: block;
+}
+
+.star-fill svg {
+  fill: #ff9800; /* The gold color */
+  width: 24px;   /* CRITICAL: Must match .star-icon width exactly */
+  height: 24px;
+  display: block;
+}

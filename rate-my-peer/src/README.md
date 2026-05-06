@@ -1,55 +1,47 @@
-Page Specification: Authentication (Login/Sign-up)
-Overview
-This page serves as the entry point for "Rate My Peer." It must handle two primary states: Existing User Login and New User Registration.
+1. UI Overview
+   This page is the central hub for the user's identity and activity. It utilizing a clean, minimalist header and a horizontal tabbed navigation bar to switch between views.
 
-1. UI Components & Layout
-   Container: A centered, responsive card component with a clean, academic aesthetic.
+2. Navigation Components (Tabs)
+   The navigation bar must support the following states, with an active underline indicator for the selected view:
 
-Branding: Display the "Rate My Peer" logo and a brief tagline ("Find your next A-Team").
+A. Profile View (Current Screenshot)
+Header: Large "Hey, [User Name]" greeting.
 
-Toggle Mechanism: A clear link or button to switch between "Don't have an account? Sign Up" and "Already have an account? Login."
+Fields: * First Name, Last Name
 
-2. Form Requirements
-   Login State (Default)
-   Fields: * Email Address (type="email")
+School (e.g., UC Irvine)
 
-Password (type="password")
+Field of Study (Major)
 
-Action: "Login" Button (Primary Bootstrap/Tailwind style).
+Expected Year of Graduation
 
-Social: "Sign in with Google" button (consistent with OAuth 2.0 requirement).
+Actions: An "Edit" button with a pencil icon to toggle input fields.
 
-Sign-up State
-Fields:
+B. Reviews View (Received & Given)
+This view should be split into two sub-sections or a nested toggle:
 
-First Name (type="text")
+Reviews Received: * Cards showing ratings from teammates.
 
-Last Name (type="text")
+Each card displays: Course Name, Star Rating (1-5), Attribute Tags (e.g., "Leader"), and the text comment.
 
-Email Address (type="email", placeholder: "student@university.edu")
+Includes an "Aggregate Score" summary (e.g., "Overall Peer Rating: 4.5/5").
 
-Password (type="password")
+Reviews Given: * A history of reviews the user has written for others.
 
-Confirm Password (type="password")
+Allows the user to see which peers they have already rated to avoid duplicates.
 
-Action: "Create Account" Button.
+C. Account Settings
+Security: Change password and manage multi-factor authentication.
 
-3. Frontend Logic & Validation
-   State Management: Use a single isLogin boolean state to toggle which form fields are visible.
+Notifications: Toggle WebSocket alerts for "New Review Received" or "Review Liked."
 
-Client-Side Validation:
+Privacy: Options to hide the "Expected Graduation Year" or "Major" from public search.
 
-Ensure email ends with a .edu domain.
+3. Technical Requirements (React + Bootstrap)
+   State Management: Use useState to track the active tab (e.g., activeTab === 'profile').
 
-Ensure "Confirm Password" matches "Password."
+Conditional Rendering: * Use a switch statement or ternary operators to render the correct component based on the activeTab.
 
-All fields must be marked as required.
+Component Reuse: * Create a ReviewCard component that can be used for both "Received" and "Given" reviews.
 
-Feedback: Display clear error messages (e.g., red text or toast notifications) for invalid inputs.
-
-4. Styling Attributes
-   Theme: Use white backgrounds for inputs with subtle borders.
-
-Focus States: Highlight input fields with the primary brand color (Navy Blue) when active.
-
-Responsiveness: On mobile, the card should take up 90% of the screen width; on desktop, it should be constrained to a maximum width (e.g., max-w-md).
+Grid Layout: * Use Bootstrap's .container and .row to ensure the labels (e.g., "First Name") and values (e.g., "Tedman Le") align correctly in a structured list format.
