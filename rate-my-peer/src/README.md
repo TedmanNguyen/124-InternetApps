@@ -1,78 +1,55 @@
-Rate My Peer (Frontend Specification)
-Project Overview
-Rate My Peer is a student-to-student rating platform designed to solve the "free-rider" problem in university group projects. It allows students to search for peers, view their historical performance metrics across different courses, and leave verified feedback based on predefined attributes.
+Page Specification: Authentication (Login/Sign-up)
+Overview
+This page serves as the entry point for "Rate My Peer." It must handle two primary states: Existing User Login and New User Registration.
 
-Tech Stack (Frontend Only)
-Framework: React.js (Functional Components with Hooks)
+1. UI Components & Layout
+   Container: A centered, responsive card component with a clean, academic aesthetic.
 
-Styling: Tailwind CSS (preferred for rapid UI development)
+Branding: Display the "Rate My Peer" logo and a brief tagline ("Find your next A-Team").
 
-Icons: Lucide-React or FontAwesome
+Toggle Mechanism: A clear link or button to switch between "Don't have an account? Sign Up" and "Already have an account? Login."
 
-State Management: React Context API or local state (useState/useEffect)
+2. Form Requirements
+   Login State (Default)
+   Fields: * Email Address (type="email")
 
-1. Feature Requirements & Logic
-Peer Search & Discovery
-Search Engine: A centralized search bar to query students by name or email.
+Password (type="password")
 
-Search Results: Display a grid of "Student Cards" showing their name, major, and average star rating.
+Action: "Login" Button (Primary Bootstrap/Tailwind style).
 
-Peer Profile Page
-Identity: Displays First Name, Last Name, Profile Picture (placeholder if null), and Major.
+Social: "Sign in with Google" button (consistent with OAuth 2.0 requirement).
 
-Multi-Course Rating Logic: * Profiles must display an Aggregate Rating (Average of all stars from all classes).
+Sign-up State
+Fields:
 
-Profiles must also show a Course Breakdown (e.g., "CS101: 5 stars", "MATH200: 1 star").
+First Name (type="text")
 
-Attribute Tag Cloud: Display the most frequently selected qualities (e.g., "Leader", "On Time", "Absent").
+Last Name (type="text")
 
-The Review Engine (Form)
-Input Fields: Course Name/ID selector, Star Rating (1-5), and Comment box.
+Email Address (type="email", placeholder: "student@university.edu")
 
-Predefined Attributes (Tags): Selectable chips for: On Time, Leader, Absent, Strong Coder, Good Communicator, Hard Worker.
+Password (type="password")
 
-2. Component Architecture
-To ensure clean code, the app should be broken down into the following reusable components:
+Confirm Password (type="password")
 
-Layout.jsx: Persistent Navbar (Search, Profile, Logout) and Footer.
+Action: "Create Account" Button.
 
-SearchBar.jsx: Input with real-time filtering logic.
+3. Frontend Logic & Validation
+   State Management: Use a single isLogin boolean state to toggle which form fields are visible.
 
-StudentCard.jsx: Summary view for search results.
+Client-Side Validation:
 
-RatingStars.jsx: Visual star component (supports fractional stars like 2.5).
+Ensure email ends with a .edu domain.
 
-AttributeTag.jsx: Colored badges for qualities (Green for positive, Red for negative).
+Ensure "Confirm Password" matches "Password."
 
-ReviewForm.jsx: Modal or Page to submit new ratings.
+All fields must be marked as required.
 
-3. Page Sitemap
-Landing Page: Hero section with the primary search bar.
+Feedback: Display clear error messages (e.g., red text or toast notifications) for invalid inputs.
 
-Search Results Page: List/Grid view of peers matching the query.
+4. Styling Attributes
+   Theme: Use white backgrounds for inputs with subtle borders.
 
-Profile Page: The detailed view of a student’s performance history.
+Focus States: Highlight input fields with the primary brand color (Navy Blue) when active.
 
-Write Review Page: The form for submitting feedback for a specific peer.
-
-4. Design Guidelines (Mock Data for Development)
-Color Palette: Professional, Academic (Navy Blue, Clean White, Slate Gray).
-
-Tone: Trustworthy and functional.
-
-Mock Data Structure:
-
-JavaScript
-const mockStudent = {
-  id: "123",
-  firstName: "John",
-  lastName: "Doe",
-  major: "Computer Science",
-  profilePic: null,
-  aggregateRating: 3.5,
-  courseRatings: [
-    { course: "CS101", rating: 5 },
-    { course: "ENG200", rating: 2 }
-  ],
-  topAttributes: ["On Time", "Strong Coder"]
-};
+Responsiveness: On mobile, the card should take up 90% of the screen width; on desktop, it should be constrained to a maximum width (e.g., max-w-md).

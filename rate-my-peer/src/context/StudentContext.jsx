@@ -6,13 +6,14 @@ const StudentContext = createContext(null)
 export function StudentProvider({ children }) {
   const [students, setStudents] = useState(mockStudents)
 
-  const addReview = ({ studentId, course, rating, comment, attributes }) => {
+  const addReview = ({ studentId, course, rating, comment, attributes, isAnonymous }) => {
     const newReview = {
       id: `r-${Date.now()}`,
       course,
       rating,
       comment,
       attributes,
+      isAnonymous: isAnonymous || false,
     }
 
     setStudents((previousStudents) =>

@@ -6,6 +6,7 @@ export default function ReviewForm({ studentName, onSubmit }) {
   const [rating, setRating] = useState(5)
   const [comment, setComment] = useState('')
   const [attributes, setAttributes] = useState(['On Time'])
+  const [isAnonymous, setIsAnonymous] = useState(false)
 
   const handleToggleAttribute = (attribute) => {
     setAttributes((current) => {
@@ -29,12 +30,14 @@ export default function ReviewForm({ studentName, onSubmit }) {
       rating: Number(rating),
       comment: comment.trim(),
       attributes,
+      isAnonymous,
     })
 
     setCourse('')
     setRating(5)
     setComment('')
     setAttributes(['On Time'])
+    setIsAnonymous(false)
   }
 
   return (
@@ -96,6 +99,15 @@ export default function ReviewForm({ studentName, onSubmit }) {
           })}
         </div>
       </fieldset>
+
+      <label className="anonymous-checkbox">
+        <input
+          type="checkbox"
+          checked={isAnonymous}
+          onChange={(event) => setIsAnonymous(event.target.checked)}
+        />
+        <span>Submit this review anonymously</span>
+      </label>
 
       <button type="submit" className="primary-link">
         Submit review

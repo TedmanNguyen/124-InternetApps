@@ -4,14 +4,23 @@ import "../styles/ReviewCard.css"
 
 export default function ReviewCard({ review }) {
     console.log(review.reviewerId)
-    const reviewer = pullStudentsGivenId(review.reviewerId)
+    const reviewer = !review.isAnonymous ? pullStudentsGivenId(review.reviewerId) : null
     return (
         <article key={review.id} className="review-item">
             <header className='review-header'>
                 <div className='left-side-header'>
                     <div className='reviewer-info'>
-                        <div className="avatar">{reviewer.firstName[0]}{reviewer.lastName[0]}</div>
-                        <strong>{`${reviewer.firstName} ${reviewer.lastName}`}</strong>
+                        {!review.isAnonymous && reviewer ? (
+                            <>
+                                <div className="avatar">{reviewer.firstName[0]}{reviewer.lastName[0]}</div>
+                                <strong>{`${reviewer.firstName} ${reviewer.lastName}`}</strong>
+                            </>
+                        ) : (
+                            <>
+                                <div className="avatar">?</div>
+                                <strong>Anonymous</strong>
+                            </>
+                        )}
                     </div>
                 </div>
                 <span>{review.course} - {review.instructor} - {review.project}</span>
