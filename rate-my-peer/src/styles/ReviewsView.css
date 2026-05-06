@@ -12,3 +12,33 @@
     margin-top: 1rem;
     margin-bottom: 0.5rem;;
 }
+
+.review-filter {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1rem;
+    align-items: center;
+}
+
+.filter-button {
+    font-size: 1rem;
+    border: 1px solid black;
+    padding: 0.25rem 1rem;
+    border-radius: 20px;
+}
+
+.filter-button:hover {
+    cursor: pointer;
+    opacity: 0.5;
+    transform: scale(1.05);
+    transition: transform 0.1s ease;
+}
+
+.filter-button:active {
+    transform: scale(1.15);
+    transition: transform 0.1s ease;
+}
+
+.review-filter .filter-button.active {
+    background-color: var(--positive-bg);
+}
