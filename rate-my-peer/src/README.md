@@ -1,29 +1,37 @@
+Objective: Enable the "Rate this Peer" functionality only when a user is viewing a profile that is not their own.
 
-README Update: Profile Privacy & Conditional Rendering
-Objective:
-Modify the ProfilePage component to differentiate between the "Logged-in User" and a "Public Peer Profile."
+1. Functional Logic:
 
-Logic Requirements:
+Permission Check: Use the existing isOwner logic (or currentUser.id !== profileUser.id).
 
-Context Check: Compare the currentLoggedInUser.id with the profileBeingViewed.id.
+Placement: The "Write a Review" button should appear at the top of the Reviews tab content area.
 
-Access Control (Private View): * If the IDs DO NOT match (Viewing someone else):
-* HIDE the "Account Settings" tab entirely.
-* HIDE the "Edit" button in the Profile Information section.
-* HIDE sensitive/private fields such as "Expected Year of Graduation."
+Redundancy Check: (Optional but recommended) Disable or hide the button if the currentUser has already submitted a review for this specific profileUser in the current academic term.
 
-Access Control (Public View):
+2. UI Component Requirements:
 
-If the IDs DO match (Viewing own profile):
+Action Button: A primary action button labeled "Rate [First Name]".
 
-Show all tabs (Profile, Reviews, Account Settings).
+Styling: Use a distinct color (e.g., Bootstrap btn-primary or a custom Navy Blue) to make it stand out.
 
-Enable the "Edit" functionality.
+Icon: Include a "plus" or "pencil" icon.
 
-Show "Expected Year of Graduation."
+Modal Trigger: Clicking the button should launch a Review Form Modal.
 
-UI Specifics for Copilot:
+The Modal Form:
 
-"When searching for another peer, the tabs should only display 'Profile' and 'Reviews'."
+Header: "Submit Review for [Maya Patel]".
 
-"In the 'Profile Information' card for a peer, strictly display only First Name, Last Name, School, and Major. Remove the graduation year and the edit icon for any user that is not the logged-in session user."
+Course Dropdown: A searchable dropdown to select the course they worked together in (e.g., "CS124").
+
+Star Rating: An interactive version of your RatingStars component where users can click to set a value (1-5).
+
+Attribute Selection: Multi-select chips for predefined qualities (e.g., Punctual, Strong Coder).
+
+Verification Checkbox: A required checkbox stating: "I verify that I worked with this student on a group project."
+
+3. State Management for Copilot:
+
+"Create a state variable showReviewModal (boolean) to handle the visibility of the submission form."
+
+"Ensure the 'Submit' button in the modal is disabled until a Course, Star Rating, and the Verification Checkbox are all completed."
