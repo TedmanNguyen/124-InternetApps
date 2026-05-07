@@ -23,6 +23,9 @@ export default function Layout() {
             <NavLink to="/" end className="header-link">
               Search
             </NavLink>
+            <NavLink to="/help" end className="header-link">
+              Help
+            </NavLink>
             <NavLink to="/student/123" className='header-link'>Profile</NavLink>
             <button type="button" className="ghost-button">
               Logout

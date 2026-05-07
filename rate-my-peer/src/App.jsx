@@ -3,6 +3,7 @@ import Layout from './components/Layout'
 import LandingPage from './pages/LandingPage'
 import LoginPage from './pages/LoginPage'
 import ProfilePage from './pages/ProfilePage'
+import HelpPage from './pages/HelpPage'
 import SearchResultsPage from './pages/SearchResultsPage'
 import WriteReviewPage from './pages/WriteReviewPage'
 import AdminDashboard from './pages/AdminDashboard'
@@ -16,6 +17,7 @@ function App() {
       <Route element={<Layout />}>
         <Route path="/" element={<LandingPage />} />
         <Route path="/search" element={<SearchResultsPage />} />
+        <Route path="/help" element={<HelpPage />} />
         <Route path="/student/:studentId" element={<ProfilePage />} />
         <Route path="/student/:studentId/review" element={<WriteReviewPage />} />
         <Route path="/admin-dashboard" element={<AdminDashboard />}>
