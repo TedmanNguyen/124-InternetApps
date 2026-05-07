@@ -13,7 +13,7 @@ import './ProfilePage.css'
 
 export default function ProfilePage() {
   const { studentId } = useParams()
-  const { getStudentById } = useStudents()
+  const { getStudentById, loggedInUserId } = useStudents()
   const [activeTab, setActiveTab] = useState('profile')
   const [isEditing, setIsEditing] = useState(false)
   const [formData, setFormData] = useState(null)
@@ -24,6 +24,9 @@ export default function ProfilePage() {
   if (!student) {
     return <p className="empty-state">Student profile not found.</p>
   }
+
+  // Check if viewing own profile or someone else's
+  const isOwnProfile = loggedInUserId === studentId
 
   if (formData === null) {
     setFormData({
@@ -71,7 +74,9 @@ export default function ProfilePage() {
     <section className="page profile-page">
       {/* Profile Header */}
       <div className="profile-header-section">
-        <h1 className="profile-greeting">Hey, {student.firstName} 👋</h1>
+        <h1 className="profile-greeting">
+          {isOwnProfile ? `Hey, ${student.firstName} 👋` : `${student.firstName} ${student.lastName}`}
+        </h1>
         <RatingStars
           rating={aggregateRating}
           totalReviews={student.reviews.length}
@@ -93,12 +98,15 @@ export default function ProfilePage() {
         >
           Reviews
         </button>
-        <button
-          className={`tab-button ${activeTab === 'settings' ? 'active' : ''}`}
-          onClick={() => setActiveTab('settings')}
-        >
-          Account Settings
-        </button>
+        {/* Only show Account Settings tab for own profile */}
+        {isOwnProfile && (
+          <button
+            className={`tab-button ${activeTab === 'settings' ? 'active' : ''}`}
+            onClick={() => setActiveTab('settings')}
+          >
+            Account Settings
+          </button>
+        )}
       </div>
 
       {/* Tab Content */}
@@ -108,12 +116,15 @@ export default function ProfilePage() {
           <section className="panel profile-panel">
             <div className="profile-panel-header">
               <h2>Profile Information</h2>
-              <button
-                className="edit-button"
-                onClick={() => setIsEditing(!isEditing)}
-              >
-                ✏️ {isEditing ? 'Cancel' : 'Edit'}
-              </button>
+              {/* Only show Edit button for own profile */}
+              {isOwnProfile && (
+                <button
+                  className="edit-button"
+                  onClick={() => setIsEditing(!isEditing)}
+                >
+                  ✏️ {isEditing ? 'Cancel' : 'Edit'}
+                </button>
+              )}
             </div>
 
             {isEditing ? (
@@ -209,12 +220,15 @@ export default function ProfilePage() {
                   </div>
                 </div>
 
-                <div className="profile-row">
-                  <div className="profile-field">
-                    <label>Expected Year of Graduation</label>
-                    <p>{student.graduationYear}</p>
+                {/* Only show graduation year for own profile */}
+                {isOwnProfile && (
+                  <div className="profile-row">
+                    <div className="profile-field">
+                      <label>Expected Year of Graduation</label>
+                      <p>{student.graduationYear}</p>
+                    </div>
                   </div>
-                </div>
+                )}
               </div>
             )}
           </section>
@@ -261,8 +275,8 @@ export default function ProfilePage() {
           </div>
         )}
 
-        {/* Account Settings Tab */}
-        {activeTab === 'settings' && (
+        {/* Account Settings Tab - Only for own profile */}
+        {isOwnProfile && activeTab === 'settings' && (
           <section className="panel settings-panel">
             <div className="settings-section">
               <h3>Security</h3>

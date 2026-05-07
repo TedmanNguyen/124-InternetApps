@@ -1,47 +1,29 @@
-1. UI Overview
-   This page is the central hub for the user's identity and activity. It utilizing a clean, minimalist header and a horizontal tabbed navigation bar to switch between views.
 
-2. Navigation Components (Tabs)
-   The navigation bar must support the following states, with an active underline indicator for the selected view:
+README Update: Profile Privacy & Conditional Rendering
+Objective:
+Modify the ProfilePage component to differentiate between the "Logged-in User" and a "Public Peer Profile."
 
-A. Profile View (Current Screenshot)
-Header: Large "Hey, [User Name]" greeting.
+Logic Requirements:
 
-Fields: * First Name, Last Name
+Context Check: Compare the currentLoggedInUser.id with the profileBeingViewed.id.
 
-School (e.g., UC Irvine)
+Access Control (Private View): * If the IDs DO NOT match (Viewing someone else):
+* HIDE the "Account Settings" tab entirely.
+* HIDE the "Edit" button in the Profile Information section.
+* HIDE sensitive/private fields such as "Expected Year of Graduation."
 
-Field of Study (Major)
+Access Control (Public View):
 
-Expected Year of Graduation
+If the IDs DO match (Viewing own profile):
 
-Actions: An "Edit" button with a pencil icon to toggle input fields.
+Show all tabs (Profile, Reviews, Account Settings).
 
-B. Reviews View (Received & Given)
-This view should be split into two sub-sections or a nested toggle:
+Enable the "Edit" functionality.
 
-Reviews Received: * Cards showing ratings from teammates.
+Show "Expected Year of Graduation."
 
-Each card displays: Course Name, Star Rating (1-5), Attribute Tags (e.g., "Leader"), and the text comment.
+UI Specifics for Copilot:
 
-Includes an "Aggregate Score" summary (e.g., "Overall Peer Rating: 4.5/5").
+"When searching for another peer, the tabs should only display 'Profile' and 'Reviews'."
 
-Reviews Given: * A history of reviews the user has written for others.
-
-Allows the user to see which peers they have already rated to avoid duplicates.
-
-C. Account Settings
-Security: Change password and manage multi-factor authentication.
-
-Notifications: Toggle WebSocket alerts for "New Review Received" or "Review Liked."
-
-Privacy: Options to hide the "Expected Graduation Year" or "Major" from public search.
-
-3. Technical Requirements (React + Bootstrap)
-   State Management: Use useState to track the active tab (e.g., activeTab === 'profile').
-
-Conditional Rendering: * Use a switch statement or ternary operators to render the correct component based on the activeTab.
-
-Component Reuse: * Create a ReviewCard component that can be used for both "Received" and "Given" reviews.
-
-Grid Layout: * Use Bootstrap's .container and .row to ensure the labels (e.g., "First Name") and values (e.g., "Tedman Le") align correctly in a structured list format.
+"In the 'Profile Information' card for a peer, strictly display only First Name, Last Name, School, and Major. Remove the graduation year and the edit icon for any user that is not the logged-in session user."
