@@ -5,6 +5,7 @@ const StudentContext = createContext(null)
 
 export function StudentProvider({ children }) {
   const [students, setStudents] = useState(mockStudents)
+  const [loggedInUserId, setLoggedInUserId] = useState('123') // John Doe is logged in by default
 
   const addReview = ({ studentId, course, rating, comment, attributes, isAnonymous }) => {
     const newReview = {
@@ -34,10 +35,14 @@ export function StudentProvider({ children }) {
     () => ({
       students,
       addReview,
+      loggedInUserId,
+      setLoggedInUserId,
       getStudentById: (studentId) =>
         students.find((student) => student.id === studentId),
+      getLoggedInUser: () =>
+        students.find((student) => student.id === loggedInUserId),
     }),
-    [students],
+    [students, loggedInUserId],
   )
 
   return (
