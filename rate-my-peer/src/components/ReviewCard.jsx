@@ -66,8 +66,8 @@ export default function ReviewCard({ review, currentUserId }) {
                 </div>
                 { currentUserId && (
                 <div className='upvote-downvote-container'>
-                    <button className='vote-button' onClick={onUpvoteClick}>{userUpvoted ? <img src={thumbsUpFilled} alt="Upvote" /> : <img src={thumbsUp} alt="Upvote" />} {numUpvotes}</button>
-                    <button className='vote-button' onClick={onDownvoteClick}>{userDownvoted ? <img src={thumbsDownFilled} alt="Downvote" /> : <img src={thumbsDown} alt="Downvote" />} {numDownvotes}</button>
+                    <button className='vote-button' onClick={onUpvoteClick}><img src={userUpvoted ? thumbsUpFilled : thumbsUp} alt="Upvote" width={25} height={25}/> {numUpvotes}</button>
+                    <button className='vote-button' onClick={onDownvoteClick}><img src={userDownvoted ? thumbsDownFilled : thumbsDown} alt="Downvote" width={25} height={25} /> {numDownvotes}</button>
                 </div>
             )}
             </div>

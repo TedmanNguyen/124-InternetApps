@@ -21,3 +21,19 @@
     align-items: center;
     margin-top: 0.5rem;
 }
+
+.vote-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    padding: 0.5rem .75rem;
+}
+
+.upvote-downvote-container {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+}   
