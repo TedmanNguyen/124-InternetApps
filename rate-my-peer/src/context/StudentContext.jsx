@@ -1,11 +1,12 @@
 import { createContext, useContext, useMemo, useState } from 'react'
 import { mockStudents } from '../data/mockStudents'
+import { admins } from '../data/admins'
 
 const StudentContext = createContext(null)
 
 export function StudentProvider({ children }) {
   const [students, setStudents] = useState(mockStudents)
-  const [loggedInUserId, setLoggedInUserId] = useState('123') // John Doe is logged in by default
+  const [loggedInUserId, setLoggedInUserId] = useState('124') // John Doe is logged in by default
 
   const addReview = ({ studentId, course, rating, comment, attributes, isAnonymous }) => {
     const newReview = {
@@ -41,6 +42,7 @@ export function StudentProvider({ children }) {
         students.find((student) => student.id === studentId),
       getLoggedInUser: () =>
         students.find((student) => student.id === loggedInUserId),
+      userIsAdmin: () => admins.includes(loggedInUserId), // John Doe is the admin
     }),
     [students, loggedInUserId],
   )

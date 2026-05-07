@@ -9,8 +9,10 @@ import WriteReviewPage from './pages/WriteReviewPage'
 import AdminDashboard from './pages/AdminDashboard'
 import ReportsView from './pages/ReportsView'
 import ReviewsView from './pages/ReviewsView'
+import { useStudents } from './context/StudentContext'
 
 function App() {
+  const { userIsAdmin } = useStudents()
   return (
     <Routes>
       <Route path="/login" element={<LoginPage />} />
@@ -20,11 +22,13 @@ function App() {
         <Route path="/help" element={<HelpPage />} />
         <Route path="/student/:studentId" element={<ProfilePage />} />
         <Route path="/student/:studentId/review" element={<WriteReviewPage />} />
-        <Route path="/admin-dashboard" element={<AdminDashboard />}>
-          <Route index element={<Navigate to="reports" replace />} />
-          <Route path="reports" element={<ReportsView />} />
-          <Route path="reviews" element={<ReviewsView />} />
-        </Route>
+        {userIsAdmin() && (
+          <Route path="/admin-dashboard" element={<AdminDashboard />}>
+            <Route index element={<Navigate to="reports" replace />} />
+            <Route path="reports" element={<ReportsView />} />
+            <Route path="reviews" element={<ReviewsView />} />
+          </Route>
+        )}
         <Route path="*" element={<Navigate to="/" replace />} />
       </Route>
     </Routes>
