@@ -8,6 +8,26 @@ const faqData = [
         id: 2,
         question: "I would like to remove my profile as a peer.",
         answer: "We do not remove students from our site unless they are no longer attending the university. If you're ever concerned that a specific comment violates our guidelines, please report the rating. Our moderators will review it immediately and remove if it is against our guidelines."
+    },
+    {
+        id: 3,
+        question: "How do I search for a classmate?",
+        answer: "Use the search bar at the top of the page to search by name or email. If there is a matching student, you can open their profile and view their peer feedback."
+    },
+    {
+        id: 4,
+        question: "How do I write a review?",
+        answer: "Go to a peer's profile and click the option to rate or review them. Try to write feedback based on your actual project experience with that person."
+    },
+    {
+        id: 5,
+        question: "Can I review myself?",
+        answer: "No. The app is designed for peer feedback, so you should only be able to review other classmates you have worked with."
+    },
+    {
+        id: 6,
+        question: "What happens when I report a review?",
+        answer: "Reported reviews are sent to the admin dashboard. An admin can look over the report and decide whether the review should be kept, removed, or marked as resolved."
     }
 ];
 
