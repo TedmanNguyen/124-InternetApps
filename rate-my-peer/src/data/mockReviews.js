@@ -11,6 +11,7 @@ const mockReviews = [
     downvotes: [],
     comment: 'Led our sprint planning and helped everyone hit deadlines.',
     attributes: ['Leader', 'On Time', 'Strong Coder'],
+    createdAt: new Date('2024-01-15'),
   },
   {
     id: 'r2',
@@ -24,6 +25,7 @@ const mockReviews = [
     downvotes: [],
     comment: 'Hard to reach late in the project and missed two check-ins.',
     attributes: ['Absent'],
+    createdAt: new Date('2024-02-20'),
   },
   {
     id: 'r3',
@@ -37,6 +39,7 @@ const mockReviews = [
     downvotes: [],
     comment: 'Excellent communication and clear pull request notes.',
     attributes: ['Good Communicator', 'Hard Worker'],
+    createdAt: new Date('2024-03-10'),
   },
   {
     id: 'r4',
@@ -50,6 +53,7 @@ const mockReviews = [
     downvotes: [],
     comment: 'Consistently reviewed everyone code and fixed blockers quickly.',
     attributes: ['Strong Coder', 'Leader', 'On Time'],
+    createdAt: new Date('2024-03-25'),
   },
   {
     id: 'r5',
@@ -63,6 +67,7 @@ const mockReviews = [
     downvotes: [],
     comment: 'Solid work quality, but needed reminders before handoff dates.',
     attributes: ['Hard Worker'],
+    createdAt: new Date('2024-04-05'),
   },
   {
     id: 'r6',
@@ -76,6 +81,7 @@ const mockReviews = [
     downvotes: [],
     comment: 'Great with data cleanup and quick to help teammates debug.',
     attributes: ['Strong Coder', 'Good Communicator'],
+    createdAt: new Date('2024-04-18'),
   },
 ]
 

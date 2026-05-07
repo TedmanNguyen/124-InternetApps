@@ -36,4 +36,15 @@
     display: flex;
     gap: 0.5rem;
     align-items: center;
-}   
+}
+
+.review-date {
+    font-size: 0.75rem;
+    color: #666;
+    margin-right: 1rem;
+}
+
+.tag-row {
+    display: flex;
+    align-items: center;
+}

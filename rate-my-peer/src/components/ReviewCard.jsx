@@ -11,7 +11,8 @@ import "../styles/ReviewCard.css"
 // will want to pass the current user ID into here
 export default function ReviewCard({ review, currentUserId }) {
     // console.log(review.reviewerId)
-
+    let createdAt = `${review.createdAt.toLocaleString('default', { month: 'long' })} ${review.createdAt.getDate()}, ${review.createdAt.getFullYear()}`
+    
     const [numUpvotes, setNumUpvotes] = useState(review.upvotes.length || 0)
     const [numDownvotes, setNumDownvotes] = useState(review.downvotes.length || 0)
     const [userUpvoted, setUserUpvoted] = useState(review.upvotes.includes(currentUserId))
@@ -60,6 +61,7 @@ export default function ReviewCard({ review, currentUserId }) {
             <p>{review.comment}</p>
             <div className='review-card-footer'>
                 <div className="tag-row">
+                <span className='review-date'>{createdAt}</span>
                 {review.attributes.map((attribute) => (
                     <AttributeTag key={`${review.id}-${attribute}`} label={attribute} />
                 ))}
