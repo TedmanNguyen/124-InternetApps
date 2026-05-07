@@ -8,6 +8,34 @@ export default function HelpPage() {
   const navigate = useNavigate()
   const [searchTerm, setSearchTerm] = useState('')
 
+  const [contactForm, setContactForm] = useState({
+    name: '',
+    email: '',
+    message: ''
+  })
+
+  const [contactSubmitted, setContactSubmitted] = useState(false)
+  const handleContactChange = (e) => {
+    const { name, value } = e.target
+
+    setContactForm((prevForm) => ({
+      ...prevForm,
+      [name]: value
+    }))
+  }
+
+  const handleContactSubmit = (e) => {
+    e.preventDefault()
+
+    setContactSubmitted(true)
+
+    setContactForm({
+      name: '',
+      email: '',
+      message: ''
+    })
+  }
+
   const filteredFAQs = faqData.filter((item) =>
     item.question.toLowerCase().includes(searchTerm.toLowerCase()) ||
     item.answer.toLowerCase().includes(searchTerm.toLowerCase())
@@ -40,6 +68,56 @@ export default function HelpPage() {
         ) : (
             <p>No matching FAQs found.</p>
         )}
+      </div>
+
+      <div className="hero-block">
+        <h1>Contact Us</h1>
+        <p className="contact-intro">
+          If you still have questions, feel free to contact us!
+        </p>
+
+        {contactSubmitted && (
+          <p className="success-message">
+            Thank you! We got your message and we'll reach out to you shortly :)
+          </p>
+        )}
+
+        <form className="contact-form" onSubmit={handleContactSubmit}>
+          <div className="contact-row">
+            <input
+              className="contact-input"
+              type="text"
+              name="name"
+              placeholder="Your name"
+              value={contactForm.name}
+              onChange={handleContactChange}
+              required
+            />
+
+            <input
+              className="contact-input"
+              type="email"
+              name="email"
+              placeholder="Your email"
+              value={contactForm.email}
+              onChange={handleContactChange}
+              required
+            />
+          </div>
+
+          <textarea
+            className="contact-textarea"
+            name="message"
+            placeholder="Your message..."
+            value={contactForm.message}
+            onChange={handleContactChange}
+            required
+          />
+
+          <button type="submit" className="contact-submit">
+            Send Message
+          </button>
+        </form>
       </div>
     </section>
   );
