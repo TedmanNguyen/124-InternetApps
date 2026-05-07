@@ -1,37 +1,38 @@
-Objective: Enable the "Rate this Peer" functionality only when a user is viewing a profile that is not their own.
+Overview
+To ensure every student can be rated, the application must allow users to create a "Placeholder Profile" for a peer if a search by email yields no results. This ensures the review process is never blocked by a missing database entry.
 
-1. Functional Logic:
+1. Functional Workflow
+   Search Trigger: User searches for an email (e.g., maya.patel@uci.edu).
 
-Permission Check: Use the existing isOwner logic (or currentUser.id !== profileUser.id).
+Null Result Logic: If the backend returns a 404 or an empty array, the UI displays a "Student Not Found" state.
 
-Placement: The "Write a Review" button should appear at the top of the Reviews tab content area.
+Call to Action: Display a button: "Can't find your peer? Create a profile to rate them."
 
-Redundancy Check: (Optional but recommended) Disable or hide the button if the currentUser has already submitted a review for this specific profileUser in the current academic term.
+Data Persistence: Once the form is submitted, the new student record is created in PostgreSQL, and the user is immediately redirected to the "Write Review" flow for that new ID.
 
-2. UI Component Requirements:
+2. Form Requirements (The "New Peer" Modal)
+   The creation form must collect the following mandatory fields:
 
-Action Button: A primary action button labeled "Rate [First Name]".
+First Name: (type="text", required)
 
-Styling: Use a distinct color (e.g., Bootstrap btn-primary or a custom Navy Blue) to make it stand out.
+Last Name: (type="text", required)
 
-Icon: Include a "plus" or "pencil" icon.
+School Email: (type="email", required).
 
-Modal Trigger: Clicking the button should launch a Review Form Modal.
+Validation: Must match the email originally searched. Must end in .edu.
 
-The Modal Form:
+Major/Field of Study: (type="text", required). Use a searchable dropdown or autocomplete if possible.
 
-Header: "Submit Review for [Maya Patel]".
+3. Frontend Logic & UX
+   Prevent Duplicates: The frontend should perform a final check to ensure a profile with that email doesn't already exist before allowing the "Create" POST request.
 
-Course Dropdown: A searchable dropdown to select the course they worked together in (e.g., "CS124").
+Pre-fill Optimization: The "School Email" field in the creation form should be auto-populated with the string the user just typed into the search bar.
 
-Star Rating: An interactive version of your RatingStars component where users can click to set a value (1-5).
+Privacy Disclaimer: Include a small note: "This profile will be public. Ensure the information matches the student's official university directory."
 
-Attribute Selection: Multi-select chips for predefined qualities (e.g., Punctual, Strong Coder).
+4. Component Implementation (React)
+   SearchEmptyState.jsx: A component rendered when results.length === 0.
 
-Verification Checkbox: A required checkbox stating: "I verify that I worked with this student on a group project."
+CreatePeerModal.jsx: A standard Bootstrap Modal (.modal) containing the 4-field form.
 
-3. State Management for Copilot:
-
-"Create a state variable showReviewModal (boolean) to handle the visibility of the submission form."
-
-"Ensure the 'Submit' button in the modal is disabled until a Course, Star Rating, and the Verification Checkbox are all completed."
+Navigation: Use useNavigate from react-router-dom to send the user to the review page after successful creation.
