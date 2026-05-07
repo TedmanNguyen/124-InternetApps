@@ -14,3 +14,10 @@
     display: flex;
     align-items: center;
 }
+
+.review-card-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 0.5rem;
+}

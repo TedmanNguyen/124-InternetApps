@@ -7,6 +7,8 @@ const mockReviews = [
     instructor: 'Dr. Ava Lane',
     project: 'Sprint Planning',
     rating: 5,
+    upvotes: [],    // Array of userIds who upvoted
+    downvotes: [],
     comment: 'Led our sprint planning and helped everyone hit deadlines.',
     attributes: ['Leader', 'On Time', 'Strong Coder'],
   },
@@ -18,6 +20,8 @@ const mockReviews = [
     instructor: 'Prof. Mei Kim',
     project: 'Client Presentation',
     rating: 2,
+    upvotes: [],
+    downvotes: [],
     comment: 'Hard to reach late in the project and missed two check-ins.',
     attributes: ['Absent'],
   },
@@ -29,6 +33,8 @@ const mockReviews = [
     instructor: 'Dr. Aaron Chen',
     project: 'API Integration',
     rating: 4,
+    upvotes: [],
+    downvotes: [],
     comment: 'Excellent communication and clear pull request notes.',
     attributes: ['Good Communicator', 'Hard Worker'],
   },
@@ -40,6 +46,8 @@ const mockReviews = [
     instructor: 'Dr. Aaron Chen',
     project: 'Code Review Sprint',
     rating: 5,
+    upvotes: [],
+    downvotes: [],
     comment: 'Consistently reviewed everyone code and fixed blockers quickly.',
     attributes: ['Strong Coder', 'Leader', 'On Time'],
   },
@@ -51,6 +59,8 @@ const mockReviews = [
     instructor: 'Prof. Elena Ortiz',
     project: 'Statistical Analysis',
     rating: 3,
+    upvotes: [],
+    downvotes: [],
     comment: 'Solid work quality, but needed reminders before handoff dates.',
     attributes: ['Hard Worker'],
   },
@@ -62,6 +72,8 @@ const mockReviews = [
     instructor: 'Dr. Priya Patel',
     project: 'Data Pipeline',
     rating: 4,
+    upvotes: [],
+    downvotes: [],
     comment: 'Great with data cleanup and quick to help teammates debug.',
     attributes: ['Strong Coder', 'Good Communicator'],
   },
@@ -91,5 +103,32 @@ export function pullAllReviews() {
     return mockReviews;
 }
 
+export function addUserUpvotedReview(review, userId) {      // change to communicate with the database
+    if (!review.upvotes.includes(userId)) {
+        review.upvotes.push(userId);
+        if (review.downvotes.includes(userId)) {
+            review.downvotes = review.downvotes.filter(id => id !== userId);
+        }
+        return true;  // indicates the review was upvoted
+    }
+    else {
+        review.upvotes = review.upvotes.filter(id => id !== userId);
+    }
+    return false;  // indicates the upvote was removed
+}
+
+export function addUserDownvotedReview(review, userId) {    // change to communicate with the database
+    if (!review.downvotes.includes(userId)) {
+        review.downvotes.push(userId);
+        if (review.upvotes.includes(userId)) {
+            review.upvotes = review.upvotes.filter(id => id !== userId);
+        }
+        return true;  // indicates the review was downvoted
+    }
+    else {
+        review.downvotes = review.downvotes.filter(id => id !== userId);
+    }
+    return false;
+}
 
 export default mockReviews

@@ -250,7 +250,7 @@ export default function ProfilePage() {
                   </div>
                   <div className="review-list">
                     {reviewsReceived.map((review) => (
-                      <ReviewCard key={review.id} review={review} />
+                      <ReviewCard key={review.id} review={review} currentUserId={loggedInUserId}/>
                     ))}
                   </div>
                 </div>
@@ -265,7 +265,7 @@ export default function ProfilePage() {
               {reviewsGiven.length > 0 ? (
                 <div className="review-list">
                   {reviewsGiven.map((review) => (
-                    <ReviewCard key={review.id} review={review} />
+                    <ReviewCard key={review.id} review={review} currentUserId={loggedInUserId} />
                   ))}
                 </div>
               ) : (
