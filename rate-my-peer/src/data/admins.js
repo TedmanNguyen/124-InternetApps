@@ -1,1 +1,1 @@
-const admins = []
+export const admins = ['123']

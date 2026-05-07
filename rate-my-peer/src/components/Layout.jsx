@@ -1,8 +1,10 @@
 import { NavLink, Outlet, useNavigate } from 'react-router-dom'
 import SearchBar from './SearchBar'
+import { useStudents } from '../context/StudentContext'
 
 export default function Layout() {
   const navigate = useNavigate()
+  const { userIsAdmin } = useStudents()
 
   const handleSearch = (searchTerm) => {
     navigate(`/search?q=${encodeURIComponent(searchTerm)}`)
@@ -17,9 +19,11 @@ export default function Layout() {
           </NavLink>
 
           <div className="header-links">
-            <NavLink to='/admin-dashboard' className='header-link'>
-              Admin Dashboard
-            </NavLink>
+            {userIsAdmin() && (
+              <NavLink to='/admin-dashboard' className='header-link'>
+                Admin Dashboard
+              </NavLink>
+            )}
             <NavLink to="/" end className="header-link">
               Search
             </NavLink>
