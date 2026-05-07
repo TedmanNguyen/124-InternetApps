@@ -58,6 +58,9 @@ export default function ReviewsView() {
             />
             <ReviewFilter reviewRole={reviewRole} setReviewRole={setReviewRole} />
             {filteredReviews.map(review => {
+                if (review.isDeleted) {
+                    return null
+                }
                 const reviewee = pullStudentsGivenId(review.revieweeId)
                 return (
                     <div className='review-card-container' key={review.id}>

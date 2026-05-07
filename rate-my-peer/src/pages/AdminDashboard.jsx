@@ -16,7 +16,7 @@ import "../styles/AdminDashboard.css"
 */
 export default function AdminDashboard() {
     return (
-    <section className="page admin-dashboard">
+    <section className="page admin-dashboard hero-block">
       <div className="admin-dashboard-header">
         <h1>Admin Dashboard</h1>
         <p>Manage students, reviews, and site settings.</p>

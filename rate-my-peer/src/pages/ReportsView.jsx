@@ -2,6 +2,7 @@ import { useMemo, useState } from "react"
 import AdminCard from "../components/AdminCard"
 import pullReports from "../data/mockReports"
 import reportStatus from "../data/reportStatus"
+import { pullReviewsGivenId } from "../data/mockReviews"
 
 export default function ReportsView() {
   const reports = useMemo(() => pullReports(), [])
@@ -10,7 +11,9 @@ export default function ReportsView() {
   const [appliedFilter, setAppliedFilter] = useState(reportStatus.slice())
 
   const filteredReports = useMemo(
-    () => reports.filter((r) => appliedFilter.includes(r.status)),
+    () => reports.filter((r) => {
+      return appliedFilter.includes(r.status) && pullReviewsGivenId(r.reviewId)?.isDeleted === false;
+    }),
     [reports, appliedFilter],
   )
 

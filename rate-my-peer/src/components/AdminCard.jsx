@@ -8,8 +8,11 @@ import { updateReportStatus } from "../data/mockReports";
 import { deleteReview } from "../data/mockReviews";
 
 export default function AdminCard({report}) {
-    const [status, setStatus] = useState(reportStatus.indexOf(report.status))
     const review = pullReviewsGivenId(report.reviewId)
+    if (!review || review.isDeleted) {
+        return null
+    }
+    const [status, setStatus] = useState(reportStatus.indexOf(report.status))
     const reviewer = pullStudentsGivenId(review.reviewerId)
     const reporter = pullStudentsGivenId(report.reporterId)
 

@@ -136,7 +136,7 @@ export default function ProfilePage() {
         </h1>
         <RatingStars
           rating={aggregateRating}
-          totalReviews={student.reviews.length}
+          totalReviews={student.reviews.filter((r) => !r.isDeleted).length}
           size="lg"
         />
       </div>
@@ -309,7 +309,7 @@ export default function ProfilePage() {
             {/* Reviews Received */}
             <section className="panel reviews-subsection">
               <h2>Reviews Received</h2>
-              {reviewsReceived.length > 0 ? (
+              {reviewsReceived.filter((r) => !r.isDeleted).length > 0 ? (
                 <div>
                   <div className="aggregate-score">
                     <p>

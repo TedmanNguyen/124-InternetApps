@@ -13,6 +13,10 @@ import "../styles/ReviewCard.css"
 // will want to pass the current user ID into here
 export default function ReviewCard({ review, currentUserId }) {
     // console.log(review.reviewerId)
+    if (review.isDeleted) {
+        return null
+    }
+
     let createdAt = `${review.createdAt.toLocaleString('default', { month: 'long' })} ${review.createdAt.getDate()}, ${review.createdAt.getFullYear()}`
     
     const [numUpvotes, setNumUpvotes] = useState(review.upvotes.length || 0)
