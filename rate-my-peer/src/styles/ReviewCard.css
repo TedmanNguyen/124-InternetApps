@@ -48,3 +48,11 @@
     display: flex;
     align-items: center;
 }
+
+.report-button {
+    background-color: var(--negative-bg);
+    color: var(--negative-text);
+    border: 1px solid var(--negative-text);
+    padding: 0.3rem 0.6rem;
+    border-radius: 4px;
+}

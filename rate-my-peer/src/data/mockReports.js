@@ -33,3 +33,18 @@ export function deleteReport(reportId) {
     }
     console.log(mockReports)
 }
+
+export function addReport({ reporterId, reviewId, reason, details }) {
+    const newReport = {
+        id: Date.now(),
+        reporterId,
+        reviewId,
+        reason,
+        details,
+        status: 'Under Review',
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+    }
+    mockReports.push(newReport)
+    return newReport
+}
