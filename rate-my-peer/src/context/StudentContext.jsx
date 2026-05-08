@@ -32,14 +32,34 @@ export function StudentProvider({ children }) {
     )
   }
 
+  const addStudent = ({ firstName, lastName, email, major }) => {
+    const newStudent = {
+      id: `stu-${Date.now()}`,
+      firstName,
+      lastName,
+      email,
+      major,
+      school: 'UC Irvine', // Default school
+      graduationYear: new Date().getFullYear() + 2, // Default 2 years from now
+      profilePic: null,
+      reviews: [],
+    }
+
+    setStudents((previousStudents) => [...previousStudents, newStudent])
+    return newStudent
+  }
+
   const value = useMemo(
     () => ({
       students,
       addReview,
+      addStudent,
       loggedInUserId,
       setLoggedInUserId,
       getStudentById: (studentId) =>
         students.find((student) => student.id === studentId),
+      getStudentByEmail: (email) =>
+        students.find((student) => student.email.toLowerCase() === email.toLowerCase()),
       getLoggedInUser: () =>
         students.find((student) => student.id === loggedInUserId),
       userIsAdmin: () => admins.includes(loggedInUserId), // John Doe is the admin

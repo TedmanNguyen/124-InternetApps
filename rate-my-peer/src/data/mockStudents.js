@@ -7,6 +7,33 @@ export const attributeOptions = [
   'Hard Worker',
 ]
 
+export const majorOptions = [
+  'Computer Science',
+  'Software Engineering',
+  'Data Science',
+  'Mechanical Engineering',
+  'Electrical Engineering',
+  'Civil Engineering',
+  'Chemical Engineering',
+  'Biology',
+  'Chemistry',
+  'Physics',
+  'Mathematics',
+  'Economics',
+  'Business Administration',
+  'Accounting',
+  'Finance',
+  'Marketing',
+  'Psychology',
+  'Sociology',
+  'English',
+  'History',
+  'Political Science',
+  'Philosophy',
+  'Arts',
+  'Music',
+]
+
 export const mockStudents = [
   {
     id: '123',
