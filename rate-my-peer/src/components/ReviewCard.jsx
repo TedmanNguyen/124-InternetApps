@@ -67,7 +67,8 @@ export default function ReviewCard({ review, currentUserId }) {
                 <span>{review.course} - {review.instructor} - {review.project}</span>
                 <span>{review.rating}.0 / 5</span>
             </header>
-            <p>{review.comment}</p>
+            <p className='review-comment'>{review.comment}</p>
+            <p><i>Would work with again:</i><strong>{review.wouldWorkWithAgain !== undefined ? (review.wouldWorkWithAgain ? "Yes" : "No") : null}</strong></p>
             <div className='review-card-footer'>
                 <div className="tag-row">
                 <span className='review-date'>{createdAt}</span>
