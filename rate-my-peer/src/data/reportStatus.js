@@ -3,6 +3,7 @@ export const reportReasons = [
     'Harassment or Bullying',
     'Hate Speech',
     'I just don\'t like it',
+    'I didn\'t work with this person',
     'Other'
 ]
 

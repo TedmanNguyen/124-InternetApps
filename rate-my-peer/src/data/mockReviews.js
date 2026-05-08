@@ -107,7 +107,7 @@ export function pullReviewsGivenRevieweeId(revieweeId) {
   return mockReviews.filter(review => review.revieweeId === revieweeId);
 }
 
-export function pullReviewsGivenReviwerId(reviewerId) {
+export function pullReviewsGivenReviewerId(reviewerId) {
   return mockReviews.filter(review => review.reviewerId === reviewerId);
 }
 

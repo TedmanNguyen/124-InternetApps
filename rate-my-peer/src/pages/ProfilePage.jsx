@@ -136,7 +136,7 @@ export default function ProfilePage() {
         </h1>
         <RatingStars
           rating={aggregateRating}
-          totalReviews={student.reviews.filter((r) => !r.isDeleted).length}
+          totalReviews={reviews.filter((r) => !r.isDeleted).length}
           size="lg"
         />
       </div>

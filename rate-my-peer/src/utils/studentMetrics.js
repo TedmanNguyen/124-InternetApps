@@ -1,14 +1,20 @@
+import { pullReviewsGivenRevieweeId } from "../data/mockReviews"
+
 export function getDisplayName(student) {
   return `${student.firstName} ${student.lastName}`
 }
 
 export function getAggregateRating(student) {
-  if (!student?.reviews?.length) {
+  if (!student) {
+    return 0
+  }
+  const reviews = pullReviewsGivenRevieweeId(student.id).filter(review => !review.isDeleted)
+  if (reviews.length === 0) {
     return 0
   }
 
-  const total = student.reviews.reduce((sum, review) => sum + review.rating, 0)
-  return Number((total / student.reviews.length).toFixed(1))
+  const total = reviews.reduce((sum, review) => sum + review.rating, 0)
+  return Number((total / reviews.length).toFixed(1))
 }
 
 export function getCourseBreakdown(student) {
