@@ -14,6 +14,7 @@ const mockReviews = [
     createdAt: new Date('2024-01-15'),
     isDeleted: false,
     isAnonymous: false,
+    wouldWorkWithAgain: true
   },
   {
     id: 'r2',
@@ -30,6 +31,7 @@ const mockReviews = [
     createdAt: new Date('2024-02-20'),
     isDeleted: false,
     isAnonymous: true,
+    wouldWorkWithAgain: false
   },
   {
     id: 'r3',
@@ -46,6 +48,7 @@ const mockReviews = [
     createdAt: new Date('2024-03-10'),
     isDeleted: false,
     isAnonymous: false,
+    wouldWorkWithAgain: false
   },
   {
     id: 'r4',
@@ -62,6 +65,7 @@ const mockReviews = [
     createdAt: new Date('2024-03-25'),
     isDeleted: false,
     isAnonymous: true,
+    wouldWorkWithAgain: true
   },
   {
     id: 'r5',
@@ -78,6 +82,7 @@ const mockReviews = [
     createdAt: new Date('2024-04-05'),
     isDeleted: false,
     isAnonymous: false,
+    wouldWorkWithAgain: false
   },
   {
     id: 'r6',
@@ -94,6 +99,7 @@ const mockReviews = [
     createdAt: new Date('2024-04-18'),
     isDeleted: false,
     isAnonymous: true,
+    wouldWorkWithAgain: true
   },
 ]
 

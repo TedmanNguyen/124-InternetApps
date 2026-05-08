@@ -392,11 +392,18 @@ a {
   color: var(--slate-400);
 }
 
-.anonymous-checkbox {
+.checkbox {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin: 0.5rem 0 0.5rem 0;
+}
+
+.anonymous-checkbox,
+.toggle-option {
   display: flex;
   align-items: center;
   gap: 0.6rem;
-  margin: 1.5rem 0 0.9rem 0;
   font-weight: 500;
   cursor: pointer;
   padding: 0.9rem 1.1rem;
@@ -407,12 +414,14 @@ a {
   width: fit-content;
 }
 
-.anonymous-checkbox:hover {
+.anonymous-checkbox:hover,
+.toggle-option:hover {
   border-color: var(--navy);
   background: #f8fafc;
 }
 
-.anonymous-checkbox input[type="checkbox"] {
+.anonymous-checkbox input[type="checkbox"],
+.toggle-option input[type="checkbox"] {
   width: 20px;
   height: 20px;
   cursor: pointer;
@@ -421,20 +430,24 @@ a {
   margin: 0;
 }
 
-.anonymous-checkbox input[type="checkbox"]:checked {
+.anonymous-checkbox input[type="checkbox"]:checked,
+.toggle-option input[type="checkbox"]:checked {
   accent-color: var(--navy);
 }
 
-.anonymous-checkbox input[type="checkbox"]:checked + span {
+.anonymous-checkbox input[type="checkbox"]:checked + span,
+.toggle-option input[type="checkbox"]:checked + span {
   color: var(--navy);
   font-weight: 600;
 }
 
-.anonymous-checkbox input[type="checkbox"]:checked {
+.anonymous-checkbox input[type="checkbox"]:checked,
+.toggle-option input[type="checkbox"]:checked {
   background: var(--navy);
 }
 
-.anonymous-checkbox:has(input[type="checkbox"]:checked) {
+.anonymous-checkbox:has(input[type="checkbox"]:checked),
+.toggle-option:has(input[type="checkbox"]:checked) {
   background: #ecf2fa;
   border-color: var(--navy);
   box-shadow: 0 0 0 3px rgba(15, 39, 71, 0.1);
