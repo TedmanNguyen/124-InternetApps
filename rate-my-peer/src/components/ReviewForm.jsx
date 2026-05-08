@@ -3,6 +3,8 @@ import { attributeOptions } from '../data/mockStudents'
 
 export default function ReviewForm({ studentName, onSubmit }) {
   const [course, setCourse] = useState('')
+  const [instructor, setInstructor] = useState('')
+  const [project, setProject] = useState('')
   const [rating, setRating] = useState(5)
   const [comment, setComment] = useState('')
   const [attributes, setAttributes] = useState(['On Time'])
@@ -21,12 +23,14 @@ export default function ReviewForm({ studentName, onSubmit }) {
   const handleSubmit = (event) => {
     event.preventDefault()
 
-    if (!course.trim() || !comment.trim() || attributes.length === 0) {
+    if (!course.trim() || !instructor.trim() || !project.trim() || !comment.trim() || attributes.length === 0) {
       return
     }
 
     onSubmit({
       course: course.trim().toUpperCase(),
+      instructor: instructor.trim(),
+      project: project.trim(),
       rating: Number(rating),
       comment: comment.trim(),
       attributes,
@@ -34,6 +38,8 @@ export default function ReviewForm({ studentName, onSubmit }) {
     })
 
     setCourse('')
+    setInstructor('')
+    setProject('')
     setRating(5)
     setComment('')
     setAttributes(['On Time'])
@@ -51,6 +57,28 @@ export default function ReviewForm({ studentName, onSubmit }) {
           value={course}
           onChange={(event) => setCourse(event.target.value)}
           placeholder="Example: CS101"
+          required
+        />
+      </label>
+
+      <label>
+        Professor
+        <input
+          type="text"
+          value={instructor}
+          onChange={(event) => setInstructor(event.target.value)}
+          placeholder="e.g., Professor David Deng"
+          required
+        />
+      </label>
+
+      <label>
+        Project
+        <input
+          type="text"
+          value={project}
+          onChange={(event) => setProject(event.target.value)}
+          placeholder="Web Crawler"
           required
         />
       </label>

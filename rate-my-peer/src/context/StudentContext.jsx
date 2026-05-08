@@ -1,5 +1,6 @@
 import { createContext, useContext, useMemo, useState } from 'react'
 import { mockStudents } from '../data/mockStudents'
+import { addReview as pushReview } from '../data/mockReviews'
 import { admins } from '../data/admins'
 
 const StudentContext = createContext(null)
@@ -8,28 +9,25 @@ export function StudentProvider({ children }) {
   const [students, setStudents] = useState(mockStudents)
   const [loggedInUserId, setLoggedInUserId] = useState('123') // John Doe is logged in by default
 
-  const addReview = ({ studentId, course, rating, comment, attributes, isAnonymous }) => {
+  const addReview = ({ studentId, course, instructor, project, rating, comment, attributes, isAnonymous }) => {
     const newReview = {
       id: `r-${Date.now()}`,
+      revieweeId: studentId,
+      reviewerId: loggedInUserId,
       course,
+      instructor,
+      project,
       rating,
+      upvotes: [],
+      downvotes: [],
       comment,
       attributes,
-      isAnonymous: isAnonymous || false,
+      createdAt: new Date(),
+      isDeleted: false,
+      isAnonymous: Boolean(isAnonymous),
     }
 
-    setStudents((previousStudents) =>
-      previousStudents.map((student) => {
-        if (student.id !== studentId) {
-          return student
-        }
-
-        return {
-          ...student,
-          reviews: [newReview, ...student.reviews],
-        }
-      }),
-    )
+    pushReview(newReview)
   }
 
   const addStudent = ({ firstName, lastName, email, major }) => {

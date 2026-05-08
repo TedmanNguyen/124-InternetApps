@@ -13,6 +13,7 @@ const mockReviews = [
     attributes: ['Leader', 'On Time', 'Strong Coder'],
     createdAt: new Date('2024-01-15'),
     isDeleted: false,
+    isAnonymous: false,
   },
   {
     id: 'r2',
@@ -28,6 +29,7 @@ const mockReviews = [
     attributes: ['Absent'],
     createdAt: new Date('2024-02-20'),
     isDeleted: false,
+    isAnonymous: true,
   },
   {
     id: 'r3',
@@ -43,6 +45,7 @@ const mockReviews = [
     attributes: ['Good Communicator', 'Hard Worker'],
     createdAt: new Date('2024-03-10'),
     isDeleted: false,
+    isAnonymous: false,
   },
   {
     id: 'r4',
@@ -58,6 +61,7 @@ const mockReviews = [
     attributes: ['Strong Coder', 'Leader', 'On Time'],
     createdAt: new Date('2024-03-25'),
     isDeleted: false,
+    isAnonymous: true,
   },
   {
     id: 'r5',
@@ -73,6 +77,7 @@ const mockReviews = [
     attributes: ['Hard Worker'],
     createdAt: new Date('2024-04-05'),
     isDeleted: false,
+    isAnonymous: false,
   },
   {
     id: 'r6',
@@ -88,11 +93,16 @@ const mockReviews = [
     attributes: ['Strong Coder', 'Good Communicator'],
     createdAt: new Date('2024-04-18'),
     isDeleted: false,
+    isAnonymous: true,
   },
 ]
 
 export function pullReviewsGivenId(reviewId) {
   return mockReviews.find(review => review.id === reviewId);
+}
+
+export function addReview( review ) {
+  mockReviews.push(review);
 }
 
 export function deleteReview(reviewId) {
