@@ -6,6 +6,7 @@ import { pullReviewsGivenId } from "../data/mockReviews"
 
 export default function ReportsView() {
   const reports = useMemo(() => pullReports(), [])
+  const [deletedToggle, setDeletedToggle] = useState(false) // used to trigger re-render when a review is deleted
 
   const [draftFilter, setDraftFilter] = useState(reportStatus.slice())
   const [appliedFilter, setAppliedFilter] = useState(reportStatus.slice())
@@ -43,7 +44,7 @@ export default function ReportsView() {
       <div className="admin-dashboard-reports">
         <div className="admin-dashboard-report-cards">
           {filteredReports.map((report) => (
-            <AdminCard key={report.id} report={report} />
+            <AdminCard key={report.id} report={report} setDeletedToggle={setDeletedToggle} />
           ))}
         </div>
       </div>

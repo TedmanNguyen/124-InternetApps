@@ -6,7 +6,7 @@ const StudentContext = createContext(null)
 
 export function StudentProvider({ children }) {
   const [students, setStudents] = useState(mockStudents)
-  const [loggedInUserId, setLoggedInUserId] = useState('124') // John Doe is logged in by default
+  const [loggedInUserId, setLoggedInUserId] = useState('123') // John Doe is logged in by default
 
   const addReview = ({ studentId, course, rating, comment, attributes, isAnonymous }) => {
     const newReview = {

@@ -21,6 +21,7 @@ export default function ReviewsView() {
     const [searchParams, setSearchParams] = useSearchParams()
     const query = (searchParams.get('q') ?? '').trim().toLowerCase()
     const [reviewRole, setReviewRole] = useState({'reviewer': true, 'reviewee': true})
+    const [deletedToggle, setDeletedToggle] = useState(false) // used to trigger re-render when a review is deleted
 
     const filteredReviews = useMemo(() => {
         return reviews.filter((review) => {
@@ -67,8 +68,8 @@ export default function ReviewsView() {
                         <ReviewCard key={review.id} review={review} />
                         <div className='bottom-row'>
                             <span><strong>Reviewee: {`${reviewee.firstName} ${reviewee.lastName}`}</strong></span>
-                            <button className='delete-review-button' onClick={() => {deleteReview(review.id); /*deleteReport(report.id)*/
-                            }}>Delete Review</button>
+                            <button className='delete-review-button' onClick={() => {deleteReview(review.id); setDeletedToggle(prev => !prev)}}
+                                >Delete Review</button>
                         </div>
                     </div>
                 )

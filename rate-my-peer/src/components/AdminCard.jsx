@@ -7,8 +7,11 @@ import { useState } from "react";
 import { updateReportStatus } from "../data/mockReports";
 import { deleteReview } from "../data/mockReviews";
 
-export default function AdminCard({report}) {
+export default function AdminCard({report, setDeletedToggle}) {
     const review = pullReviewsGivenId(report.reviewId)
+
+    // const [deletedToggle, setDeletedToggle] = useState(false) // used to trigger re-render when a review is deleted
+
     if (!review || review.isDeleted) {
         return null
     }
@@ -37,7 +40,9 @@ export default function AdminCard({report}) {
                         <p><strong>Created At:</strong> {new Date(report.createdAt).toLocaleString()}</p>
                         <p><strong>Updated At:</strong> {new Date(report.updatedAt).toLocaleString()}</p>
                     </div>
-                    <button className='delete-review-button' onClick={() => {deleteReview(report.reviewId); /*deleteReport(report.id)*/
+                    <button className='delete-review-button' onClick={() => {
+                        deleteReview(report.reviewId); /*deleteReport(report.id)*/
+                        setDeletedToggle(prev => !prev)  // trigger re-render to remove the card after deletion;
                     }}>Delete Review</button>
                 </div>
             </div>
