@@ -10,8 +10,8 @@ Frontend Stack: React
 ## Set-up Instructions 
 
 Installation:  
-`npm install
+`npm install`
 
 To run locally:  
-`npm run dev
+`npm run dev`
 
