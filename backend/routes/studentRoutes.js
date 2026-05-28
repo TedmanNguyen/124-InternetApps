@@ -26,6 +26,7 @@ router.get('/:id', async (req, res) => {
 })
 
 router.post('/', async (req, res) => {
+    console.log(req.body);
     try {
         if (!req.body.firstName || !req.body.lastName || !req.body.email) {
             return res.status(400).json({ message: 'First name, last name, and email are required' });
