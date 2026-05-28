@@ -10,27 +10,37 @@ export const ReviewProvider = ({ children }) => {
     const [reviews, setReviews] = useState({})
     const { loggedInUserId } = useStudents()
 
-    // Don't want to store all the reviews in memory!
-    // useEffect(() => {
-    //     const fetchReviews = async () => {
-    //         try {
-    //             // const response = await axios.get(`${urls.base}/${urls.reviews}`)
-    //             const response = await axios.get(`${urls.base}/${urls.reviews}`)
-    //             setReviews(response.data)
-    //         } catch (error) {
-    //             console.error('Error fetching reviews:', error)
-    //         }
-    //     }
+    /* Don't want to store all the reviews in memory,
+    just cache the ones that have been fetched already*/
 
-    //     fetchReviews()
-    // }, [])
-
-    const addReview = (review) => {
-        setReviews(prevReviews => ({ ...prevReviews, [review._id]: review }))
+    const addReview = ({ studentId, course, instructor, project, rating, comment, attributes, isAnonymous }) => {
+        const newReview = {
+        id: `r-${Date.now()}`,
+        revieweeId: studentId,
+        reviewerId: loggedInUserId,
+        course,
+        instructor,
+        project,
+        rating,
+        upvotes: [],
+        downvotes: [],
+        comment,
+        attributes,
+        createdAt: new Date(),
+        isDeleted: false,
+        isAnonymous: Boolean(isAnonymous),
+        }
+        try {
+            const response = axios.post(`${urls.base}/${urls.reviewsEndpoint}`, newReview)
+            const savedReview = response.data
+            setReviews(prevReviews => ({ ...prevReviews, [savedReview._id]: savedReview }))
+        } catch (error) {
+            console.error('Error adding review:', error)
+        }
     }
 
-    const deleteReview = (review) => {
-        if (review.reviewerId !== loggedInUserId)
+    const deleteReview = (reviewId) => {
+        if (reviews[reviewId].reviewerId !== loggedInUserId)
             return // Only allow deletion if the logged in user is the reviewer
         try {
             axios.delete(`${urls.base}/${urls.reviewsEndpoint}/${review._id}`)
@@ -41,6 +51,20 @@ export const ReviewProvider = ({ children }) => {
             })
         } catch (error) {
             console.error('Error deleting review:', error)
+        }
+    }
+
+    const fetchAllReviews = async () => {
+        try {
+            const response = await axios.get(`${urls.base}/${urls.reviewsEndpoint}`)
+            const reviewsArray = response.data
+            const reviewsMap = {}
+            reviewsArray.forEach(review => {
+                reviewsMap[review._id] = review
+            })
+            setReviews(reviewsMap)
+        } catch (error) {
+            console.error('Error fetching reviews:', error)
         }
     }
 
@@ -90,6 +114,7 @@ export const ReviewProvider = ({ children }) => {
         reviews,
         addReview,
         deleteReview,
+        fetchAllReviews,
         fetchReviewById,
         fetchReviewsByRevieweeId,
         fetchReviewsByReviewerId,
