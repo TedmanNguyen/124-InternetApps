@@ -5,7 +5,7 @@ const Review = require('../models/Review');
 router.get('/', async (req, res) => {
     try {
         const reviews = await Review.find();
-        res.json(reviews);
+        res.json(reviews.filter(review => !review.deleted)); // Exclude deleted reviews
     } catch (err) {
         console.error(err);
         res.status(500).json({ message: err.message });
@@ -15,7 +15,7 @@ router.get('/', async (req, res) => {
 router.get('/:id', async (req, res) => {
     try {
         const review = await Review.findById(req.params.id);
-        res.json(review);
+        res.json(review.filter(review => !review.deleted)); // Exclude deleted reviews
     } catch (err) {
         console.error(err);
         res.status(500).json({ message: err.message });
@@ -25,7 +25,7 @@ router.get('/:id', async (req, res) => {
 router.get('/reviewer/:reviewerId', async (req, res) => {
     try {
         const reviews = await Review.find({ reviewerId: req.params.reviewerId });
-        res.json(reviews);
+        res.json(reviews.filter(review => !review.deleted)); // Exclude deleted reviews
     } catch (err) {
         console.error(err);
         res.status(500).json({ message: err.message });
@@ -67,7 +67,7 @@ router.put('/:id', async (req, res) => {
 
 router.delete('/:id', async (req, res) => {
     try {
-        const review = await Review.findByIdAndDelete(req.params.id);
+        const review = await Review.findByIdAndUpdate(req.params.id, { deleted: true }, { new: true });
         res.json(review);
     } catch (err) {
         console.error(err);
