@@ -10,7 +10,8 @@ export const AdminProvider = ({ children }) => {
     useEffect(() => {
         const fetchReports = async () => {
             try {
-                const response = await axios.get(`${urls.base}/${urls.reports}`)
+                // const response = await axios.get(`${urls.base}/${urls.reports}`)
+                const response = await axios.get('http://localhost:3000/api/reports')
                 setReports(response.data)
             } catch (error) {
                 console.error('Error fetching reports:', error)
