@@ -63,6 +63,7 @@ export const ReviewProvider = ({ children }) => {
                 reviewsMap[review._id] = review
             })
             setReviews(reviewsMap)
+            return reviewsMap
         } catch (error) {
             console.error('Error fetching reviews:', error)
         }
@@ -75,6 +76,7 @@ export const ReviewProvider = ({ children }) => {
             try {
                 const response = axios.get(`${urls.base}/${urls.reviewsEndpoint}/${id}`)
                 setReviews(prevReviews => ({ ...prevReviews, [id]: response.data }))
+                return response.data
             } catch (error) {
                 console.error('Error fetching review:', error)
             }
