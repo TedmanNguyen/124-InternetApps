@@ -1,5 +1,3 @@
-import pullReports from "../data/mockReports"
-import AdminCard from "../components/AdminCard"
 import { NavLink, Outlet } from 'react-router-dom'
 import "../styles/AdminDashboard.css"
 

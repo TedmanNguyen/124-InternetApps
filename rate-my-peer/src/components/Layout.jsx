@@ -4,10 +4,15 @@ import { useStudents } from '../context/StudentContext'
 
 export default function Layout() {
   const navigate = useNavigate()
-  const { userIsAdmin } = useStudents()
+  const { userIsAdmin, currentUser, logout } = useStudents()
 
   const handleSearch = (searchTerm) => {
     navigate(`/search?q=${encodeURIComponent(searchTerm)}`)
+  }
+
+  const handleLogout = () => {
+    logout()
+    navigate('/login')
   }
 
   return (
@@ -20,7 +25,7 @@ export default function Layout() {
 
           <div className="header-links">
             {userIsAdmin() && (
-              <NavLink to='/admin-dashboard' className='header-link'>
+              <NavLink to="/admin-dashboard" className="header-link">
                 Admin Dashboard
               </NavLink>
             )}
@@ -30,10 +35,20 @@ export default function Layout() {
             <NavLink to="/help" end className="header-link">
               Help
             </NavLink>
-            <NavLink to="/student/123" className='header-link'>Profile</NavLink>
-            <button type="button" className="ghost-button">
-              Logout
-            </button>
+            {currentUser ? (
+              <>
+                <NavLink to={`/student/${currentUser.id}`} className="header-link">
+                  Profile
+                </NavLink>
+                <button type="button" className="ghost-button" onClick={handleLogout}>
+                  Logout
+                </button>
+              </>
+            ) : (
+              <NavLink to="/login" className="header-link">
+                Login
+              </NavLink>
+            )}
           </div>
         </div>
 
@@ -54,4 +69,3 @@ export default function Layout() {
     </div>
   )
 }
-

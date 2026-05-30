@@ -1,50 +1,77 @@
-import { createContext, useContext, useMemo, useState, useEffect } from "react";
-import axios from "axios";
-import { urls } from '../data/urls';
+import { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react'
+import { api } from '../api/client'
+import { useStudents } from './StudentContext'
 
+// Admin-only data: moderation reports. Skips loading entirely if the current
+// user isn't an admin so non-admins don't get 403s in the console.
 const AdminContext = createContext(null)
 
-export const AdminProvider = ({ children }) => {
-    const [reports, setReports] = useState([])
+export function AdminProvider({ children }) {
+  const { currentUser, authChecked } = useStudents()
+  const [reports, setReports] = useState([])
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState(null)
 
-    useEffect(() => {
-        const fetchReports = async () => {
-            try {
-                // const response = await axios.get(`${urls.base}/${urls.reports}`)
-                const response = await axios.get('http://localhost:3000/api/reports')
-                setReports(response.data)
-            } catch (error) {
-                console.error('Error fetching reports:', error)
-            }
-        }
-
-        fetchReports()
-    }, [])
-
-    const setReportStatus = ( {reportId, status} ) => {
-        setReports(prevReports => 
-            prevReports.map(report => 
-                report._id === reportId ? { ...report, status } : report
-            )
-        )
+  const refresh = useCallback(async (params = {}) => {
+    setLoading(true)
+    setError(null)
+    try {
+      const { reports } = await api.reports.list(params)
+      setReports(reports)
+      return reports
+    } catch (err) {
+      setError(err.message)
+      throw err
+    } finally {
+      setLoading(false)
     }
+  }, [])
 
-    const value = useMemo(() => ({
-        reports,
-        setReportStatus,
-    }), [reports])
+  useEffect(() => {
+    if (!authChecked) return
+    if (!currentUser?.isAdmin) {
+      setReports([])
+      return
+    }
+    refresh().catch(() => {})
+  }, [authChecked, currentUser, refresh])
 
-    return (
-        <AdminContext.Provider value={value}>
-            {children}
-        </AdminContext.Provider>
-    )
+  const updateReportStatus = useCallback(async (reportId, status) => {
+    const { report } = await api.reports.updateStatus(reportId, status)
+    setReports((prev) => prev.map((r) => (r.id === reportId ? report : r)))
+    return report
+  }, [])
+
+  const removeReport = useCallback(async (reportId) => {
+    await api.reports.remove(reportId)
+    setReports((prev) => prev.filter((r) => r.id !== reportId))
+  }, [])
+
+  const createReport = useCallback(async ({ reviewId, reason, details }) => {
+    const { report } = await api.reports.create({ reviewId, reason, details })
+    // Only push into local state if we're an admin viewing the list.
+    if (currentUser?.isAdmin) setReports((prev) => [report, ...prev])
+    return report
+  }, [currentUser])
+
+  const value = useMemo(
+    () => ({
+      reports,
+      loading,
+      error,
+      refresh,
+      updateReportStatus,
+      removeReport,
+      createReport,
+    }),
+    [reports, loading, error, refresh, updateReportStatus, removeReport, createReport],
+  )
+
+  return <AdminContext.Provider value={value}>{children}</AdminContext.Provider>
 }
 
-export const useAdmin = () => {
-    const context = useContext(AdminContext)
-    if (!context) {
-        throw new Error("useAdmin must be used within an AdminProvider")
-    }
-    return context
+export function useAdmin() {
+  const ctx = useContext(AdminContext)
+  if (!ctx) throw new Error('useAdmin must be used within an AdminProvider')
+  return ctx
 }

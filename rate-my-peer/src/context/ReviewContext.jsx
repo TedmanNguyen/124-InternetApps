@@ -1,138 +1,96 @@
-import { useState, useEffect, createContext, useContext } from "react"
-import axios from "axios"
-import { urls } from '../data/urls';
-import { useStudents } from "./StudentContext";
-import ReviewCard from "../components/ReviewCard";
+import { createContext, useCallback, useContext, useMemo, useState } from 'react'
+import { api } from '../api/client'
 
+// Lazy-loaded review store. Pages call the fetch helpers in their own
+// useEffect; results are cached by reviewId so re-renders don't refetch.
 const ReviewContext = createContext(null)
 
-export const ReviewProvider = ({ children }) => {
-    const [reviews, setReviews] = useState({})
-    const { loggedInUserId } = useStudents()
+export function ReviewProvider({ children }) {
+  const [byId, setById] = useState({}) // { [reviewId]: review }
 
-    /* Don't want to store all the reviews in memory,
-    just cache the ones that have been fetched already*/
+  const cacheMany = useCallback((reviews) => {
+    setById((prev) => {
+      const next = { ...prev }
+      reviews.forEach((r) => {
+        next[r.id] = r
+      })
+      return next
+    })
+  }, [])
 
-    const addReview = ({ studentId, course, instructor, project, rating, comment, attributes, isAnonymous }) => {
-        const newReview = {
-        id: `r-${Date.now()}`,
-        revieweeId: studentId,
-        reviewerId: loggedInUserId,
-        course,
-        instructor,
-        project,
-        rating,
-        upvotes: [],
-        downvotes: [],
-        comment,
-        attributes,
-        createdAt: new Date(),
-        isDeleted: false,
-        isAnonymous: Boolean(isAnonymous),
-        }
-        try {
-            const response = axios.post(`${urls.base}/${urls.reviewsEndpoint}`, newReview)
-            const savedReview = response.data
-            setReviews(prevReviews => ({ ...prevReviews, [savedReview._id]: savedReview }))
-        } catch (error) {
-            console.error('Error adding review:', error)
-        }
-    }
+  const fetchReviewsForStudent = useCallback(
+    async (studentId) => {
+      const { reviews } = await api.students.reviewsReceived(studentId)
+      cacheMany(reviews)
+      return reviews
+    },
+    [cacheMany],
+  )
 
-    const deleteReview = (reviewId) => {
-        if (reviews[reviewId].reviewerId !== loggedInUserId)
-            return // Only allow deletion if the logged in user is the reviewer
-        try {
-            axios.delete(`${urls.base}/${urls.reviewsEndpoint}/${review._id}`)
-            setReviews(prevReviews => {
-                const newReviews = { ...prevReviews }
-                delete newReviews[review._id]
-                return newReviews
-            })
-        } catch (error) {
-            console.error('Error deleting review:', error)
-        }
-    }
+  const fetchReviewsGivenBy = useCallback(
+    async (studentId) => {
+      const { reviews } = await api.students.reviewsGiven(studentId)
+      cacheMany(reviews)
+      return reviews
+    },
+    [cacheMany],
+  )
 
-    const fetchAllReviews = async () => {
-        try {
-            const response = await axios.get(`${urls.base}/${urls.reviewsEndpoint}`)
-            const reviewsArray = response.data
-            const reviewsMap = {}
-            reviewsArray.forEach(review => {
-                reviewsMap[review._id] = review
-            })
-            setReviews(reviewsMap)
-            return reviewsMap
-        } catch (error) {
-            console.error('Error fetching reviews:', error)
-        }
-    }
+  const fetchAllReviews = useCallback(
+    async (params = {}) => {
+      const { reviews } = await api.reviews.listAll(params)
+      cacheMany(reviews)
+      return reviews
+    },
+    [cacheMany],
+  )
 
-    const fetchReviewById = (id) => {
-        if ( reviews[id] ) {
-            return reviews[id]
-        } else {
-            try {
-                const response = axios.get(`${urls.base}/${urls.reviewsEndpoint}/${id}`)
-                setReviews(prevReviews => ({ ...prevReviews, [id]: response.data }))
-                return response.data
-            } catch (error) {
-                console.error('Error fetching review:', error)
-            }
-        }
-        return reviews[id]
-    }
+  const createReview = useCallback(
+    async (payload) => {
+      const { review } = await api.reviews.create(payload)
+      cacheMany([review])
+      return review
+    },
+    [cacheMany],
+  )
 
-    const fetchReviewsByRevieweeId = async (revieweeId) => {
-        const cachedReviews = Object.values(reviews).filter(review => review.revieweeId === revieweeId)
-        if (cachedReviews.length > 0) {
-            return cachedReviews
-        } else {
-            try {
-                const response = await axios.get(`${urls.base}/${urls.reviewsEndpoint}/reviewee/${revieweeId}`)
-                return response.data
-            } catch (error) {
-                console.error('Error fetching reviews:', error)
-            }
-        }
-    }
+  const removeReview = useCallback(async (reviewId) => {
+    await api.reviews.remove(reviewId)
+    setById((prev) => {
+      if (!prev[reviewId]) return prev
+      return { ...prev, [reviewId]: { ...prev[reviewId], isDeleted: true } }
+    })
+  }, [])
 
-    const fetchReviewsByReviewerId = async (reviewerId) => {
-        const cachedReviews = Object.values(reviews).filter(review => review.reviewerId === reviewerId)
-        if (cachedReviews.length > 0) {
-            return cachedReviews
-        } else {
-            try {
-                const response = await axios.get(`${urls.base}/${urls.reviewsEndpoint}/reviewer/${reviewerId}`)
-                return response.data
-                } catch (error) {
-                    console.error('Error fetching reviews:', error)
-                }
-            }
-    }
+  // value: 'up' | 'down' | 'clear'. Returns the updated review.
+  const voteReview = useCallback(
+    async (reviewId, value) => {
+      const { review } = await api.reviews.vote(reviewId, value)
+      cacheMany([review])
+      return review
+    },
+    [cacheMany],
+  )
 
-    const value = {
-        reviews,
-        addReview,
-        deleteReview,
-        fetchAllReviews,
-        fetchReviewById,
-        fetchReviewsByRevieweeId,
-        fetchReviewsByReviewerId,
-    }
+  const value = useMemo(
+    () => ({
+      reviewsById: byId,
+      getReview: (id) => byId[id] || null,
+      fetchReviewsForStudent,
+      fetchReviewsGivenBy,
+      fetchAllReviews,
+      createReview,
+      removeReview,
+      voteReview,
+    }),
+    [byId, fetchReviewsForStudent, fetchReviewsGivenBy, fetchAllReviews, createReview, removeReview, voteReview],
+  )
 
-    return (
-        <ReviewContext.Provider value={value}>
-            {children}
-        </ReviewContext.Provider>
-    )
+  return <ReviewContext.Provider value={value}>{children}</ReviewContext.Provider>
 }
 
-export const useReviews = () => {
-    const context = useContext(ReviewContext)
-    if (!context) {
-        throw new Error("useReviews must be used within a ReviewProvider")
-    }
-    return context
+export function useReviews() {
+  const ctx = useContext(ReviewContext)
+  if (!ctx) throw new Error('useReviews must be used within a ReviewProvider')
+  return ctx
 }

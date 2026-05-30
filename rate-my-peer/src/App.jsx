@@ -12,7 +12,12 @@ import ReviewsView from './pages/ReviewsView'
 import { useStudents } from './context/StudentContext'
 
 function App() {
-  const { userIsAdmin } = useStudents()
+  const { userIsAdmin, authChecked } = useStudents()
+
+  // Avoid a flicker where /admin-dashboard briefly redirects to / for a logged-in admin
+  // before the session is restored from the token.
+  if (!authChecked) return null
+
   return (
     <Routes>
       <Route path="/login" element={<LoginPage />} />

@@ -1,26 +1,23 @@
-import { useMemo, useState } from "react"
-import AdminCard from "../components/AdminCard"
-import pullReports from "../data/mockReports"
-import reportStatus from "../data/reportStatus"
-import { pullReviewsGivenId } from "../data/mockReviews"
+import { useEffect, useMemo, useState } from 'react'
+import AdminCard from '../components/AdminCard'
+import reportStatus from '../data/reportStatus'
+import { useAdmin } from '../context/AdminContext'
 
 export default function ReportsView() {
-  const reports = useMemo(() => pullReports(), [])
-  const [deletedToggle, setDeletedToggle] = useState(false) // used to trigger re-render when a review is deleted
+  const { reports, loading, error, refresh } = useAdmin()
 
   const [draftFilter, setDraftFilter] = useState(reportStatus.slice())
   const [appliedFilter, setAppliedFilter] = useState(reportStatus.slice())
 
+  // Re-fetch when the applied filter changes so the server sends only what we need.
+  useEffect(() => {
+    refresh({ status: appliedFilter.join(',') }).catch(() => {})
+  }, [appliedFilter, refresh])
+
   const filteredReports = useMemo(
-    () => reports.filter((r) => {
-      return appliedFilter.includes(r.status) && pullReviewsGivenId(r.reviewId)?.isDeleted === false;
-    }),
+    () => reports.filter((r) => appliedFilter.includes(r.status)),
     [reports, appliedFilter],
   )
-
-  const applyFilterOnClick = () => {
-    setAppliedFilter(draftFilter)
-  }
 
   return (
     <section className="page admin-dashboard">
@@ -36,15 +33,18 @@ export default function ReportsView() {
             />
           ))}
         </div>
-        <button className="apply-filter-button" onClick={applyFilterOnClick}>
+        <button className="apply-filter-button" onClick={() => setAppliedFilter(draftFilter)}>
           Apply
         </button>
       </div>
 
+      {loading && <p className="muted">Loading reports…</p>}
+      {error && <p className="empty-state">{error}</p>}
+
       <div className="admin-dashboard-reports">
         <div className="admin-dashboard-report-cards">
           {filteredReports.map((report) => (
-            <AdminCard key={report.id} report={report} setDeletedToggle={setDeletedToggle} />
+            <AdminCard key={report.id} report={report} />
           ))}
         </div>
       </div>
@@ -52,20 +52,19 @@ export default function ReportsView() {
   )
 }
 
-function FilterBadge({status, statusFilter, setStatusFilter}) {
-    const isActive = statusFilter.includes(status)
+function FilterBadge({ status, statusFilter, setStatusFilter }) {
+  const isActive = statusFilter.includes(status)
+  const toggleStatus = () => {
+    if (isActive) setStatusFilter((prev) => prev.filter((s) => s !== status))
+    else setStatusFilter((prev) => [...prev, status])
+  }
 
-    const toggleStatus = () => {
-        if (isActive) {
-            setStatusFilter(prev => prev.filter(s => s !== status))
-        } else {
-            setStatusFilter(prev => [...prev, status])
-        }
-    }
-
-    return (
-        <button className={`status-filter-badge ${isActive ? "status-" + status.toLowerCase().replace(' ', '-') : 'inactive'}`} onClick={toggleStatus}>
-            {status}
-        </button>
-    )
+  return (
+    <button
+      className={`status-filter-badge ${isActive ? 'status-' + status.toLowerCase().replace(' ', '-') : 'inactive'}`}
+      onClick={toggleStatus}
+    >
+      {status}
+    </button>
+  )
 }

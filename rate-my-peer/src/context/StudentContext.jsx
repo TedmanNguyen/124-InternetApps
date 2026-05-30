@@ -1,153 +1,136 @@
-import { createContext, useContext, useMemo, useState } from 'react'
-import { mockStudents } from '../data/mockStudents'
-import { addReview as pushReview } from '../data/mockReviews'
-import axios from 'axios'
-import { urls } from '../data/urls';
-import { admins } from '../data/admins'
+import { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react'
+import { api, getToken, setToken } from '../api/client'
 
+// Shape of the context value is intentionally close to the previous mock version
+// so most existing components keep working with minor tweaks.
+//
+// students is an ARRAY of { id, firstName, lastName, email, school, major, ... }
+// so .filter/.map in the pages still work.
 const StudentContext = createContext(null)
 
-// TODO: Link to backend
-
 export function StudentProvider({ children }) {
-  const [students, setStudents] = useState({})
-  const [loggedInUserId, setLoggedInUserId] = useState("6a16652ff96a78e517049c23")
-  const [loggedInUser, setLoggedInUser] = useState(null)
+  const [students, setStudents] = useState([])
+  const [currentUser, setCurrentUser] = useState(null) // null = logged out
+  const [authChecked, setAuthChecked] = useState(false) // becomes true after first /me attempt
+  const [studentsLoading, setStudentsLoading] = useState(true)
+  const [studentsError, setStudentsError] = useState(null)
 
-  const addStudent = ({ firstName, lastName, email, major }) => {
-    const newStudent = {
-      id: `stu-${Date.now()}`,
-      firstName,
-      lastName,
-      email,
-      major,
-      school: 'UC Irvine', // Default school
-      graduationYear: new Date().getFullYear() + 2, // Default 2 years from now
-      profilePic: null,
-      reviews: [],
-    }
+  // --- Initial load: restore session if a token is in storage, then fetch students ---
+  useEffect(() => {
+    let cancelled = false
 
-    try {
-      const response = axios.post(`${urls.base}/${urls.studentsEndpoint}`, newStudent)
-      setStudents((previousStudents) => ({
-        ...previousStudents,
-        [response.data._id]: response.data,
-      }))
-      return newStudent
-    } catch (error) {
-        console.error('Error adding student:', error)
-    }
-  }
+    async function init() {
+      if (getToken()) {
+        try {
+          const { user } = await api.auth.me()
+          if (!cancelled) setCurrentUser(user)
+        } catch {
+          setToken(null) // bad/expired token
+        }
+      }
+      if (!cancelled) setAuthChecked(true)
 
-  const fetchAllStudents = async () => {
-    try {
-        const response = await axios.get(`${urls.base}/${urls.studentsEndpoint}`)
-        const studentsArray = response.data
-        const studentsMap = {}
-        studentsArray.forEach((student) => {
-            studentsMap[student._id] = student
-        })
-        setStudents(studentsMap)
-        return studentsMap
-    } catch (error) {
-        console.error('Error fetching students:', error)
-    }
-  }
-
-  // getStudentById: (studentId) =>
-  //       students[studentId],
-  //     getStudentByEmail: (email) =>
-  //       students.find((student) => student.email.toLowerCase() === email.toLowerCase()),
-  //     getLoggedInUser: () =>
-  //       students[loggedInUserId],
-
-  const fetchStudentById = (studentId) => {
-    if (students[studentId]) {
-      return students[studentId]
-    } else {
       try {
-        const response = axios.get(`${urls.base}/${urls.studentsEndpoint}/${studentId}`)
-        const student = response.data
-        setStudents((previousStudents) => ({
-          ...previousStudents,
-          [student._id]: student,
-        }))
-        return student
-      } catch (error) {
-          console.error('Error fetching student by ID:', error)
+        const { students } = await api.students.list()
+        if (!cancelled) setStudents(students)
+      } catch (err) {
+        if (!cancelled) setStudentsError(err.message)
+      } finally {
+        if (!cancelled) setStudentsLoading(false)
       }
     }
-  }
 
-  const fetchStudentByEmail = (email) => {
-    const student = Object.values(students).find((student => student.email.toLowerCase() === email.toLowerCase()))
-    if (student) {
-      return student
-    } else {
-      try {
-        // TODO: Implement the endpoint for this
-        const response = axios.get(`${urls.base}/${urls.studentsEndpoint}?email=${email}`)
-        const fetchedStudent = response.data
-        setStudents((previousStudents) => ({
-          ...previousStudents,
-          [fetchedStudent._id]: fetchedStudent,
-        }))
-        return fetchedStudent
-      } catch (error) {
-          console.error('Error fetching student by email:', error)
-      }
-  }}
+    init()
+    return () => {
+      cancelled = true
+    }
+  }, [])
 
-  const getLoggedInUser = () => {
-    if (!loggedInUserId) {
-      return null
-    }
-    if (students[loggedInUserId]) {
-      return students[loggedInUserId]
-    } else {
-      try {
-        const response = axios.get(`${urls.base}/${urls.studentsEndpoint}/${loggedInUserId}`)
-        const student = response.data
-        setStudents((previousStudents) => ({
-          ...previousStudents,
-          [student._id]: student,
-        }))
-        return student
-      } catch (error) {
-          console.error('Error fetching logged in user:', error)
-      }
-    }
-  }
+  const refreshStudents = useCallback(async (q = '') => {
+    const { students } = await api.students.list(q)
+    setStudents(students)
+    return students
+  }, [])
+
+  // --- Auth ---
+  const login = useCallback(async (email, password) => {
+    const { token, user } = await api.auth.login({ email, password })
+    setToken(token)
+    setCurrentUser(user)
+    return user
+  }, [])
+
+  const signup = useCallback(async (payload) => {
+    const { token, user } = await api.auth.signup(payload)
+    setToken(token)
+    setCurrentUser(user)
+    return user
+  }, [])
+
+  const logout = useCallback(() => {
+    setToken(null)
+    setCurrentUser(null)
+  }, [])
+
+  // --- Mutations ---
+  const addReview = useCallback(async ({ studentId, ...rest }) => {
+    const { review } = await api.reviews.create({ revieweeId: studentId, ...rest })
+    return review
+  }, [])
+
+  const addStudent = useCallback(async ({ firstName, lastName, email, major }) => {
+    const { student } = await api.students.create({ firstName, lastName, email, major })
+    setStudents((prev) => [...prev, student])
+    return student
+  }, [])
 
   const value = useMemo(
     () => ({
+      // data
       students,
-      fetchAllStudents,
+      studentsLoading,
+      studentsError,
+      refreshStudents,
+
+      // auth
+      currentUser,
+      authChecked,
+      login,
+      signup,
+      logout,
+
+      // back-compat with the old context surface
+      loggedInUserId: currentUser?.id ?? null,
+      getLoggedInUser: () => currentUser,
+      userIsAdmin: () => !!currentUser?.isAdmin,
+      getStudentById: (studentId) => students.find((s) => s.id === studentId),
+      getStudentByEmail: (email) =>
+        students.find((s) => s.email.toLowerCase() === String(email).toLowerCase()),
+
+      // mutations
+      addReview,
       addStudent,
-      loggedInUserId,
-      setLoggedInUserId,
-      loggedInUser,
-      setLoggedInUser,
-      fetchStudentById,
-      fetchStudentByEmail,
-      getLoggedInUser,
-      userIsAdmin: () => admins.includes(loggedInUserId), // John Doe is the admin
     }),
-    [students, loggedInUserId],
+    [
+      students,
+      studentsLoading,
+      studentsError,
+      refreshStudents,
+      currentUser,
+      authChecked,
+      login,
+      signup,
+      logout,
+      addReview,
+      addStudent,
+    ],
   )
 
-  return (
-    <StudentContext.Provider value={value}>{children}</StudentContext.Provider>
-  )
+  return <StudentContext.Provider value={value}>{children}</StudentContext.Provider>
 }
 
 export function useStudents() {
-  const context = useContext(StudentContext)
-
-  if (!context) {
-    throw new Error('useStudents must be used within a StudentProvider')
-  }
-
-  return context
+  const ctx = useContext(StudentContext)
+  if (!ctx) throw new Error('useStudents must be used within a StudentProvider')
+  return ctx
 }
-

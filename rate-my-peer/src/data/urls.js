@@ -1,6 +1,3 @@
-export const urls = {
-    base: 'http://localhost:3000',
-    studentsEndpoint: 'api/students',
-    reviewsEndpoint: 'api/reviews',
-    reportsEndpoint: 'api/reports',
-}
+// Deprecated. The Vite dev server proxies /api to the backend, so URLs are
+// just paths. See vite.config.js. Use the wrapper in src/api/client.js.
+export const urls = {}

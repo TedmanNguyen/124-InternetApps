@@ -1,7 +1,12 @@
 import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { useStudents } from '../context/StudentContext'
 import './LoginPage.css'
 
 function LoginPage() {
+  const navigate = useNavigate()
+  const { login, signup } = useStudents()
+  const [submitting, setSubmitting] = useState(false)
   const [isLogin, setIsLogin] = useState(true)
   const [formData, setFormData] = useState({
     firstName: '',
@@ -77,7 +82,7 @@ function LoginPage() {
     return newErrors
   }
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
 
     const newErrors = isLogin ? validateLoginForm() : validateSignUpForm()
@@ -87,9 +92,24 @@ function LoginPage() {
       return
     }
 
-    // TODO: Handle actual login/signup API call
-    console.log('Form submitted:', { isLogin, ...formData })
-    alert(`${isLogin ? 'Login' : 'Sign Up'} successful!`)
+    setSubmitting(true)
+    try {
+      if (isLogin) {
+        await login(formData.email, formData.password)
+      } else {
+        await signup({
+          firstName: formData.firstName,
+          lastName: formData.lastName,
+          email: formData.email,
+          password: formData.password,
+        })
+      }
+      navigate('/')
+    } catch (err) {
+      setErrors({ submit: err.message })
+    } finally {
+      setSubmitting(false)
+    }
   }
 
 
@@ -192,9 +212,13 @@ function LoginPage() {
             </div>
           )}
 
+          {errors.submit && (
+            <span className="error-message">{errors.submit}</span>
+          )}
+
           {/* Action Button */}
-          <button type="submit" className="login-button">
-            {isLogin ? 'Login' : 'Create Account'}
+          <button type="submit" className="login-button" disabled={submitting}>
+            {submitting ? 'Please wait…' : isLogin ? 'Login' : 'Create Account'}
           </button>
         </form>
 

@@ -1,50 +1,13 @@
-const mockReports = [
-    {
-        id: 1,
-        reporterId: '123',
-        reviewId: 'r3',
-        reason: 'Inappropriate language in review comment.',
-        details: 'The comment contained offensive language that is not acceptable.',
-        status: 'Under Review',
-        createdAt: '2024-06-01T10:00:00Z',
-        updatedAt: '2024-06-02T15:30:00Z'
-    }
-]
+// Deprecated. Use src/context/AdminContext.jsx or src/api/client.js.
 
-export default function pullReports() {
-    return mockReports
+const removed = (name) => () => {
+  throw new Error(
+    `${name} from src/data/mockReports has been removed. Use AdminContext or src/api/client.`,
+  )
 }
 
-export function updateReportStatus(reportId, newStatus) {
-    // replace this function with an API call to update the report status in the database
-    const reportIndex = mockReports.findIndex(report => report.id === reportId);
-    if (reportIndex !== -1) {
-        mockReports[reportIndex].status = newStatus;
-        mockReports[reportIndex].updatedAt = new Date().toISOString();
-    }
-    // console.log(mockReports)
-}
+export const updateReportStatus = removed('updateReportStatus')
+export const deleteReport = removed('deleteReport')
+export const addReport = removed('addReport')
 
-export function deleteReport(reportId) {
-    // replace this function with an API call to delete the report from the database
-    const reportIndex = mockReports.findIndex(report => report.id === reportId);
-    if (reportIndex !== -1) {
-        mockReports.splice(reportIndex, 1);
-    }
-    console.log(mockReports)
-}
-
-export function addReport({ reporterId, reviewId, reason, details }) {
-    const newReport = {
-        id: Date.now(),
-        reporterId,
-        reviewId,
-        reason,
-        details,
-        status: 'Under Review',
-        createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString(),
-    }
-    mockReports.push(newReport)
-    return newReport
-}
+export default removed('pullReports (default)')
