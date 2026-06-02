@@ -25,6 +25,38 @@ router.get('/:id', async (req, res) => {
     }
 })
 
+router.get('/name/:name', async (req, res) => {
+    console.log('get by name called with name:', req.params.name);
+    try {
+        const students = await Student.find({
+            $or: [
+                { firstName: { $regex: req.params.name, $options: 'i' } },
+                { lastName: { $regex: req.params.name, $options: 'i' } }
+            ]
+        });
+        res.json(students);
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ message: err.message });
+    }
+    console.log('get by name finished processing');
+});
+
+router.get('/email/:email', async (req, res) => {
+    console.log('get by email called with email:', req.params.email);
+    try {
+        const student = await Student.findOne({ email: req.params.email });
+        if (!student) {
+            return res.status(404).json({ message: 'Student not found' });
+        }
+        res.json(student);
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ message: err.message });
+    }
+    console.log('get by email finished processing');
+});
+
 router.post('/', async (req, res) => {
     console.log(req.body);
     try {
