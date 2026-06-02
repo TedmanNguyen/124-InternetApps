@@ -59,6 +59,39 @@ router.get('/', async (req, res) => {
   })
 })
 
+// GET /api/students/email/:email
+router.get('/email/:email', async (req, res) => {
+  const student = await Student.findOne({ email: req.params.email.toLowerCase() })
+  if (!student) throw new HttpError(404, 'Student not found')
+  const summary = await summarize([student._id])
+  const s = summary.get(String(student._id))
+  res.json({
+    student: {
+      ...student.toPublic(),
+      averageRating: s?.averageRating ?? 0,
+      reviewCount: s?.reviewCount ?? 0,
+      topAttributes: s?.topAttributes ?? [],
+    },
+  })
+})
+
+// GET /api/students/name/:name   — returns array (multiple students can share a name)
+router.get('/name/:name', async (req, res) => {
+  const rx = new RegExp(escapeRegex(req.params.name.trim()), 'i')
+  const students = await Student.find({ $or: [{ firstName: rx }, { lastName: rx }] })
+    .sort({ firstName: 1, lastName: 1 })
+    .limit(100)
+  const summary = await summarize(students.map((s) => s._id))
+  res.json({
+    students: students.map((s) => ({
+      ...s.toPublic(),
+      averageRating: summary.get(String(s._id))?.averageRating ?? 0,
+      reviewCount: summary.get(String(s._id))?.reviewCount ?? 0,
+      topAttributes: summary.get(String(s._id))?.topAttributes ?? [],
+    })),
+  })
+})
+
 // GET /api/students/:id
 router.get('/:id', async (req, res) => {
   const student = await Student.findById(req.params.id)

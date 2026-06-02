@@ -52,10 +52,12 @@ export const api = {
   students: {
     list: (q = '') => request(`/api/students${q ? `?q=${encodeURIComponent(q)}` : ''}`),
     get: (id) => request(`/api/students/${id}`),
+    getByName: name => request(`/api/students/name/${encodeURIComponent(name)}`),
+    getByEmail: email => request(`/api/students/email/${encodeURIComponent(email)}`),
     create: (payload) => request('/api/students', { method: 'POST', body: payload }),
-    update: (id, payload) => request(`/api/students/${id}`, { method: 'PATCH', body: payload }),
-    reviewsReceived: (id) => request(`/api/students/${id}/reviews`),
-    reviewsGiven: (id) => request(`/api/students/${id}/reviews/given`),
+    update: (id, payload) => request(`/api/students/${id}`, { method: 'PATCH', body: payload })
+    // reviewsReceived: (id) => request(`/api/students/${id}/reviews`),
+    // reviewsGiven: (id) => request(`/api/students/${id}/reviews/given`),
   },
   reviews: {
     listAll: (params = {}) => {
@@ -65,6 +67,8 @@ export const api = {
     create: (payload) => request('/api/reviews', { method: 'POST', body: payload }),
     remove: (id) => request(`/api/reviews/${id}`, { method: 'DELETE' }),
     vote: (id, value) => request(`/api/reviews/${id}/vote`, { method: 'POST', body: { value } }),
+    readByReviewerId: (reviewerId) => request(`/api/reviews/reviewer/${reviewerId}`),
+    readByRevieweeId: (revieweeId) => request(`/api/reviews/reviewee/${revieweeId}`)
   },
   reports: {
     list: (params = {}) => {
