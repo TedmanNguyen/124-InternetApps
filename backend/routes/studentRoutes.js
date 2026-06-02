@@ -27,11 +27,13 @@ router.get('/:id', async (req, res) => {
 
 router.get('/name/:name', async (req, res) => {
     console.log('get by name called with name:', req.params.name);
+    const firstName = req.params.name.split(' ')[0];
+    const lastName = req.params.name.split(' ')[1];
     try {
         const students = await Student.find({
             $or: [
-                { firstName: { $regex: req.params.name, $options: 'i' } },
-                { lastName: { $regex: req.params.name, $options: 'i' } }
+                { firstName: { $regex: firstName, $options: 'i' } },
+                { lastName: { $regex: lastName, $options: 'i' } }
             ]
         });
         res.json(students);
