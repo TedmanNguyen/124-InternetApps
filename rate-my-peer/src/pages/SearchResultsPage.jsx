@@ -1,29 +1,42 @@
-import { useMemo, useState } from 'react'
+import { useState, useEffect} from 'react'
 import { useSearchParams } from 'react-router-dom'
 import StudentCard from '../components/StudentCard'
 import SearchEmptyState from '../components/SearchEmptyState'
 import CreatePeerModal from '../components/CreatePeerModal'
-import { useStudents } from '../context/StudentContext'
-import { getDisplayName } from '../utils/studentMetrics'
+import { api } from '../api/client'
 
 export default function SearchResultsPage() {
-  const { students } = useStudents()
   const [searchParams] = useSearchParams()
   const query = (searchParams.get('q') ?? '').trim().toLowerCase()
   const [showCreateModal, setShowCreateModal] = useState(false)
+  const [filteredStudents, setFilteredStudents] = useState([])
 
   const isEmailSearch = query.includes('@')
 
-  const filteredStudents = useMemo(() => {
-    if (!query) {
-      return students
+  useEffect(() => {
+    let cancelled = false
+
+    async function fetchData() {
+      try {
+        if (isEmailSearch) {
+          const { student } = await api.students.getByEmail(query)
+          if (!cancelled) setFilteredStudents(student ? [student] : [])
+        } else {
+          const { students } = await api.students.list(query)
+          if (!cancelled) setFilteredStudents(students ?? [])
+        }
+      } catch (err) {
+        if (!cancelled) setFilteredStudents([])
+        console.error('Search failed:', err)
+      }
     }
 
-    return students.filter((student) => {
-      const fullName = getDisplayName(student).toLowerCase()
-      return fullName.includes(query) || student.email.toLowerCase().includes(query)
-    })
-  }, [query, students])
+    fetchData()
+
+    return () => {
+      cancelled = true
+    }
+  }, [query, isEmailSearch])
 
   return (
     <section className="page">

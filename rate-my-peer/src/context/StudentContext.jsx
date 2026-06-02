@@ -84,6 +84,16 @@ export function StudentProvider({ children }) {
     return student
   }, [])
 
+  const getStudentByName = useCallback(async (name) => {
+    const { students } = await api.students.getByName(name)
+    return students // ideally this endpoint would enforce uniqueness and return a single student instead of an array
+  }, [])
+
+  const getStudentByEmail = useCallback(async (email) => {
+    const { student } = await api.students.getByEmail(email)
+    return student
+  }, [])
+
   const value = useMemo(
     () => ({
       // data
@@ -104,8 +114,8 @@ export function StudentProvider({ children }) {
       getLoggedInUser: () => currentUser,
       userIsAdmin: () => !!currentUser?.isAdmin,
       getStudentById: (studentId) => students.find((s) => s.id === studentId),
-      getStudentByEmail: (email) =>
-        students.find((s) => s.email.toLowerCase() === String(email).toLowerCase()),
+      getStudentByEmail: getStudentByEmail,
+      getStudentByName: getStudentByName,
 
       // mutations
       addReview,

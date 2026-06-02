@@ -21,7 +21,7 @@ export default function SearchBar({
         onChange={(event) => {
           const value = event.target.value
           setTerm(value)
-          onSearch(value.trim())
+          // onSearch(value.trim())
         }}
         placeholder={placeholder}
         aria-label="Search students by name or email"
