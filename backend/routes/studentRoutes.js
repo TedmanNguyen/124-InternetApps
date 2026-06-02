@@ -2,6 +2,17 @@ const express = require('express');
 const router = express.Router();
 const Student = require('../models/Student');
 
+const validateName = (name) => {
+    const split = name.trim().split(' ');
+    firstName = split[0];
+    lastName = split[1];
+    
+    return {
+        firstName: firstName ? firstName : " ",
+        lastName: lastName ? lastName : " "
+    };
+}
+
 router.get('/', async (req, res) => {
     try {
         const students = await Student.find();
@@ -27,8 +38,7 @@ router.get('/:id', async (req, res) => {
 
 router.get('/name/:name', async (req, res) => {
     console.log('get by name called with name:', req.params.name);
-    const firstName = req.params.name.split(' ')[0];
-    const lastName = req.params.name.split(' ')[1];
+    const { firstName, lastName } = validateName(req.params.name);
     try {
         const students = await Student.find({
             $or: [
