@@ -11,7 +11,7 @@ const validateName = (name) => {
         firstName: firstName ? firstName : " ",
         lastName: lastName ? lastName : " "
     };
-}
+};
 
 router.get('/', async (req, res) => {
     try {
@@ -22,19 +22,6 @@ router.get('/', async (req, res) => {
         res.status(500).json({ message: err.message });
     }
 });
-
-router.get('/:id', async (req, res) => {
-    try {
-        const student = await Student.findById(req.params.id);
-        if (!student) {
-            return res.status(404).json({ message: 'Student not found' });
-        }
-        res.json(student);
-    } catch (err) {
-        console.error(err);
-        res.status(500).json({ message: err.message });
-    }
-})
 
 router.get('/name/:name', async (req, res) => {
     console.log('get by name called with name:', req.params.name);
@@ -57,7 +44,21 @@ router.get('/name/:name', async (req, res) => {
 router.get('/email/:email', async (req, res) => {
     console.log('get by email called with email:', req.params.email);
     try {
-        const student = await Student.findOne({ email: req.params.email });
+        const student = await Student.findOne({ email: req.params.email.toLowerCase() });
+        if (!student) {
+            return res.status(404).json({ message: 'Student not found' });
+        }
+        res.json({ student });
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ message: err.message });
+    }
+    console.log('get by email finished processing');
+});
+
+router.get('/:id', async (req, res) => {
+    try {
+        const student = await Student.findById(req.params.id);
         if (!student) {
             return res.status(404).json({ message: 'Student not found' });
         }
@@ -66,7 +67,6 @@ router.get('/email/:email', async (req, res) => {
         console.error(err);
         res.status(500).json({ message: err.message });
     }
-    console.log('get by email finished processing');
 });
 
 router.post('/', async (req, res) => {
@@ -95,7 +95,7 @@ router.put('/:id', async (req, res) => {
         console.error(err);
         res.status(500).json({ message: err.message });
     }
-})
+});
 
 router.delete('/:id', async (req, res) => {
     try {
@@ -108,6 +108,6 @@ router.delete('/:id', async (req, res) => {
         console.error(err);
         res.status(500).json({ message: err.message });
     }
-})
+});
 
 module.exports = router;

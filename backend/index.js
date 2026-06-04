@@ -8,6 +8,7 @@ const port = 3000;
 mongoose.connect(process.env.MONGO_URI)
     .then(() => console.log('MongoDB connected'))
     .catch(err => console.log(err));
+
 app.use(express.json());
 app.use(cors());
 
