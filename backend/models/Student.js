@@ -9,6 +9,8 @@ const studentSchema = new mongoose.Schema({
     graduationYear: { type: Number, required: true },
     profilePic: { type: String },
     reviews: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Review' }],
+    passwordHash: { type: String, default: null },
+    isAdmin: { type: Boolean, default: false },
 });
 
 const Student = mongoose.model('Student', studentSchema);
