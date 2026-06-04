@@ -9,10 +9,11 @@ import WriteReviewPage from './pages/WriteReviewPage'
 import AdminDashboard from './pages/AdminDashboard'
 import ReportsView from './pages/ReportsView'
 import ReviewsView from './pages/ReviewsView'
+import ProtectedRoute from './components/ProtectedRoute'
 import { useStudents } from './context/StudentContext'
 
 function App() {
-  const { userIsAdmin, authChecked } = useStudents()
+  const { authChecked } = useStudents()
 
   // Avoid a flicker where /admin-dashboard briefly redirects to / for a logged-in admin
   // before the session is restored from the token.
@@ -26,14 +27,26 @@ function App() {
         <Route path="/search" element={<SearchResultsPage />} />
         <Route path="/help" element={<HelpPage />} />
         <Route path="/student/:studentId" element={<ProfilePage />} />
-        <Route path="/student/:studentId/review" element={<WriteReviewPage />} />
-        {userIsAdmin() && (
-          <Route path="/admin-dashboard" element={<AdminDashboard />}>
-            <Route index element={<Navigate to="reports" replace />} />
-            <Route path="reports" element={<ReportsView />} />
-            <Route path="reviews" element={<ReviewsView />} />
-          </Route>
-        )}
+        <Route
+          path="/student/:studentId/review"
+          element={
+            <ProtectedRoute>
+              <WriteReviewPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/admin-dashboard"
+          element={
+            <ProtectedRoute adminOnly>
+              <AdminDashboard />
+            </ProtectedRoute>
+          }
+        >
+          <Route index element={<Navigate to="reports" replace />} />
+          <Route path="reports" element={<ReportsView />} />
+          <Route path="reviews" element={<ReviewsView />} />
+        </Route>
         <Route path="*" element={<Navigate to="/" replace />} />
       </Route>
     </Routes>

@@ -1,11 +1,19 @@
 import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { Navigate, useLocation, useNavigate } from 'react-router-dom'
 import { useStudents } from '../context/StudentContext'
 import './LoginPage.css'
 
+const MIN_PASSWORD_LENGTH = 8
+const EDU_EMAIL = /^[^\s@]+@[^\s@]+\.edu$/i
+
 function LoginPage() {
   const navigate = useNavigate()
-  const { login, signup } = useStudents()
+  const location = useLocation()
+  const { login, signup, currentUser, authChecked } = useStudents()
+
+  // Where to send the user after a successful login (defaults to home).
+  const redirectTo = location.state?.from?.pathname || '/'
+
   const [submitting, setSubmitting] = useState(false)
   const [isLogin, setIsLogin] = useState(true)
   const [formData, setFormData] = useState({
@@ -33,7 +41,7 @@ function LoginPage() {
   }
 
   const validateEmail = (email) => {
-    return email.endsWith('.edu')
+    return EDU_EMAIL.test(email.trim())
   }
 
   const validateLoginForm = () => {
@@ -71,6 +79,8 @@ function LoginPage() {
 
     if (!formData.password) {
       newErrors.password = 'Password is required'
+    } else if (formData.password.length < MIN_PASSWORD_LENGTH) {
+      newErrors.password = `Password must be at least ${MIN_PASSWORD_LENGTH} characters`
     }
 
     if (!formData.confirmPassword) {
@@ -104,12 +114,17 @@ function LoginPage() {
           password: formData.password,
         })
       }
-      navigate('/')
+      navigate(redirectTo, { replace: true })
     } catch (err) {
       setErrors({ submit: err.message })
     } finally {
       setSubmitting(false)
     }
+  }
+
+  // Already signed in? Don't show the login form — bounce to where they were headed.
+  if (authChecked && currentUser) {
+    return <Navigate to={redirectTo} replace />
   }
 
 

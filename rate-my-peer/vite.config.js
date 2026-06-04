@@ -9,7 +9,7 @@ export default defineConfig({
       // Anything starting with /api is forwarded to the Express server.
       // Run `npm run dev` in /server in a second terminal.
       '/api': {
-        target: 'http://localhost:3000',
+        target: 'http://localhost:5000',
         changeOrigin: true,
       },
     },
