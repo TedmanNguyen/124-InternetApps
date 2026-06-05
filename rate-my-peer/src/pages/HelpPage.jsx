@@ -40,7 +40,7 @@ export default function HelpPage() {
     <section className="page help-page">
       <div className="hero-block">
         <h1>How Can We Help?</h1>
-        <div className="search-bar">
+        <div className="search-bar" role="search" aria-label="Search FAQ">
           <input
             type="search"
             placeholder="Search FAQ..."
@@ -73,7 +73,7 @@ export default function HelpPage() {
           </p>
         )}
 
-        <form className="contact-form" onSubmit={handleContactSubmit}>
+        <form className="contact-form" onSubmit={handleContactSubmit} aria-label="Contact Us">
           <div className="contact-row">
             <input className="contact-input" type="text" name="name" placeholder="Your name" value={contactForm.name} onChange={handleContactChange} required />
             <input className="contact-input" type="email" name="email" placeholder="Your email" value={contactForm.email} onChange={handleContactChange} required />
