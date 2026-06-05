@@ -9,7 +9,7 @@ export default defineConfig({
       // Anything starting with /api is forwarded to the Express server.
       // Run `npm run dev` in /backend in a second terminal.
       '/api': {
-        target: 'http://localhost:5001',
+        target: 'http://rate-my-peer-env.eba-c2fyxs4v.us-east-2.elasticbeanstalk.com/',
         changeOrigin: true,
       },
     },

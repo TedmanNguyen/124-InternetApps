@@ -16,7 +16,8 @@ export function setToken(token) {
 
 export async function request(path, { method = 'GET', body, headers = {} } = {}) {
   const token = getToken()
-  const res = await fetch(path.startsWith('/') ? path : `/api/${path}`, {
+  const API = 'http://rate-my-peer-env.eba-c2fyxs4v.us-east-2.elasticbeanstalk.com'
+  const res = await fetch(path.startsWith('/') ? `${API}${path}` : `${API}/api/${path}`, {
     method,
     headers: {
       'Content-Type': 'application/json',
