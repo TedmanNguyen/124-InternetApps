@@ -55,9 +55,9 @@ export const api = {
     getByName: name => request(`/api/students/name/${encodeURIComponent(name)}`),
     getByEmail: email => request(`/api/students/email/${encodeURIComponent(email)}`),
     create: (payload) => request('/api/students', { method: 'POST', body: payload }),
-    update: (id, payload) => request(`/api/students/${id}`, { method: 'PATCH', body: payload })
-    // reviewsReceived: (id) => request(`/api/students/${id}/reviews`),
-    // reviewsGiven: (id) => request(`/api/students/${id}/reviews/given`),
+    update: (id, payload) => request(`/api/students/${id}`, { method: 'PATCH', body: payload }),
+    reviewsReceived: (id) => request(`/api/students/${id}/reviews`),
+    reviewsGiven: (id) => request(`/api/students/${id}/reviews/given`),
   },
   reviews: {
     listAll: (params = {}) => {
@@ -71,10 +71,7 @@ export const api = {
     readByRevieweeId: (revieweeId) => request(`/api/reviews/reviewee/${revieweeId}`)
   },
   reports: {
-    list: (params = {}) => {
-      const qs = new URLSearchParams(params).toString()
-      return request(`/api/reports${qs ? `?${qs}` : ''}`)
-    },
+    list: () => request('/api/reports'),
     create: (payload) => request('/api/reports', { method: 'POST', body: payload }),
     updateStatus: (id, status) => request(`/api/reports/${id}`, { method: 'PATCH', body: { status } }),
     remove: (id) => request(`/api/reports/${id}`, { method: 'DELETE' }),
