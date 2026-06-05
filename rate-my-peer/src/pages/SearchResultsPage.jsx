@@ -22,7 +22,7 @@ export default function SearchResultsPage() {
           const { student } = await api.students.getByEmail(query)
           if (!cancelled) setFilteredStudents(student ? [student] : [])
         } else {
-          const students = await api.students.getByName(query)
+          const { students } = await api.students.getByName(query)
           if (!cancelled) setFilteredStudents(Array.isArray(students) ? students : [])
         }
       } catch (err) {
