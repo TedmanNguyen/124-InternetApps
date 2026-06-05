@@ -77,8 +77,18 @@ router.get('/email/:email', async (req, res) => {
 
 // GET /api/students/name/:name   — returns array (multiple students can share a name)
 router.get('/name/:name', async (req, res) => {
-  const rx = new RegExp(escapeRegex(req.params.name.trim()), 'i')
-  const students = await Student.find({ $or: [{ firstName: rx }, { lastName: rx }] })
+  const name = req.params.name.trim()
+  const parts = name.split(/\s+/)
+  const conditions = [
+    { firstName: new RegExp(escapeRegex(name), 'i') },
+    { lastName: new RegExp(escapeRegex(name), 'i') },
+  ]
+  if (parts.length >= 2) {
+    const firstRx = new RegExp(escapeRegex(parts[0]), 'i')
+    const lastRx = new RegExp(escapeRegex(parts.slice(1).join(' ')), 'i')
+    conditions.push({ $and: [{ firstName: firstRx }, { lastName: lastRx }] })
+  }
+  const students = await Student.find({ $or: conditions })
     .sort({ firstName: 1, lastName: 1 })
     .limit(100)
   const summary = await summarize(students.map((s) => s._id))
