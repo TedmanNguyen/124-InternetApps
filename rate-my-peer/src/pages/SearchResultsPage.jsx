@@ -7,11 +7,12 @@ import { api } from '../api/client'
 
 export default function SearchResultsPage() {
   const [searchParams] = useSearchParams()
-  const query = (searchParams.get('q') ?? '').trim().toLowerCase()
+  const query = (searchParams.get('q') ?? '').trim()
+  const normalizedQuery = query.toLowerCase()
   const [showCreateModal, setShowCreateModal] = useState(false)
   const [filteredStudents, setFilteredStudents] = useState([])
 
-  const isEmailSearch = query.includes('@')
+  const isEmailSearch = normalizedQuery.includes('@')
 
   useEffect(() => {
     let cancelled = false
@@ -19,10 +20,10 @@ export default function SearchResultsPage() {
     async function fetchData() {
       try {
         if (isEmailSearch) {
-          const { student } = await api.students.getByEmail(query)
+          const { student } = await api.students.getByEmail(normalizedQuery)
           if (!cancelled) setFilteredStudents(student ? [student] : [])
         } else {
-          const { students } = await api.students.getByName(query)
+          const { students } = await api.students.getByName(normalizedQuery)
           if (!cancelled) setFilteredStudents(Array.isArray(students) ? students : [])
         }
       } catch (err) {
@@ -36,7 +37,7 @@ export default function SearchResultsPage() {
     return () => {
       cancelled = true
     }
-  }, [query, isEmailSearch])
+  }, [normalizedQuery, isEmailSearch])
 
   return (
     <section className="page">

@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import AdminCard from '../components/AdminCard'
 import reportStatus from '../data/reportStatus'
 import { useAdmin } from '../context/AdminContext'
@@ -8,36 +8,68 @@ export default function ReportsView() {
 
   const [draftFilter, setDraftFilter] = useState(reportStatus.slice())
   const [appliedFilter, setAppliedFilter] = useState(reportStatus.slice())
+  const [dropdownOpen, setDropdownOpen] = useState(false)
+  const dropdownRef = useRef(null)
 
-  // Re-fetch when the applied filter changes so the server sends only what we need.
   useEffect(() => {
     refresh({ status: appliedFilter.join(',') }).catch(() => {})
   }, [appliedFilter, refresh])
 
-  console.log(reports)
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
+        setDropdownOpen(false)
+      }
+    }
+    document.addEventListener('mousedown', handleClickOutside)
+    return () => document.removeEventListener('mousedown', handleClickOutside)
+  }, [])
 
   const filteredReports = useMemo(
     () => reports.filter((r) => appliedFilter.includes(r.status)),
     [reports, appliedFilter],
   )
 
+  const handleApply = () => {
+    setAppliedFilter(draftFilter)
+    setDropdownOpen(false)
+  }
+
+  const selectedCount = draftFilter.length
+  const totalCount = reportStatus.length
+
   return (
     <section className="page admin-dashboard">
-      <div className="filter-container">
-        <div className="status-filter">
-          <span><strong>Filter by Status:</strong></span>
-          {reportStatus.map((status) => (
-            <FilterBadge
-              key={status}
-              status={status}
-              statusFilter={draftFilter}
-              setStatusFilter={setDraftFilter}
-            />
-          ))}
+      <div className="filter-container" ref={dropdownRef}>
+        <div className="status-filter-dropdown">
+          <button
+            className="apply-filter-button"
+            onClick={() => setDropdownOpen((o) => !o)}
+          >
+            Filter by Status
+            {selectedCount < totalCount && ` (${selectedCount}/${totalCount})`}
+            {' '}{dropdownOpen ? '▲' : '▼'}
+          </button>
+
+          {dropdownOpen && (
+            <div className="status-filter-menu">
+              {reportStatus.map((status) => (
+                <FilterOption
+                  key={status}
+                  status={status}
+                  draftFilter={draftFilter}
+                  setDraftFilter={setDraftFilter}
+                />
+              ))}
+              <div className="status-filter-menu-footer">
+                <button className="apply-filter-button" onClick={handleApply}>
+                  Apply
+                </button>
+              </div>
+            </div>
+          )}
         </div>
-        <button className="apply-filter-button" onClick={() => setAppliedFilter(draftFilter)}>
-          Apply
-        </button>
       </div>
 
       {loading && <p className="muted">Loading reports…</p>}
@@ -54,19 +86,17 @@ export default function ReportsView() {
   )
 }
 
-function FilterBadge({ status, statusFilter, setStatusFilter }) {
-  const isActive = statusFilter.includes(status)
-  const toggleStatus = () => {
-    if (isActive) setStatusFilter((prev) => prev.filter((s) => s !== status))
-    else setStatusFilter((prev) => [...prev, status])
+function FilterOption({ status, draftFilter, setDraftFilter }) {
+  const isChecked = draftFilter.includes(status)
+  const toggle = () => {
+    if (isChecked) setDraftFilter((prev) => prev.filter((s) => s !== status))
+    else setDraftFilter((prev) => [...prev, status])
   }
 
   return (
-    <button
-      className={`status-filter-badge ${isActive ? 'status-' + status.toLowerCase().replace(' ', '-') : 'inactive'}`}
-      onClick={toggleStatus}
-    >
+    <label className={`status-filter-option status-${status.toLowerCase().replace(' ', '-')}`}>
+      <input type="checkbox" checked={isChecked} onChange={toggle} />
       {status}
-    </button>
+    </label>
   )
 }

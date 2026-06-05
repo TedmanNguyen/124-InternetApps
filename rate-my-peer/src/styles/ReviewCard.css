@@ -2,23 +2,41 @@
     display: flex;
     gap: 0.5rem;
     align-items: center;
+    min-width: 0;
+}
+
+.reviewer-info strong {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
 .left-side-header {
     display: flex;
     gap: 0.5rem;
     align-items: center;
+    min-width: 0;
 }
 
 .review-header {
     display: flex;
-    align-items: center;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    gap: 0.35rem 0.75rem;
+    margin-bottom: 0.5rem;
+}
+
+.review-header > span {
+    font-size: 0.85rem;
+    color: var(--slate-400);
 }
 
 .review-card-footer {
     display: flex;
     justify-content: space-between;
-    align-items: center;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    gap: 0.5rem;
     margin-top: 0.5rem;
 }
 
@@ -36,17 +54,21 @@
     display: flex;
     gap: 0.5rem;
     align-items: center;
+    flex-shrink: 0;
 }
 
 .review-date {
     font-size: 0.75rem;
     color: #666;
-    margin-right: 1rem;
+    margin-right: 0.5rem;
+    white-space: nowrap;
 }
 
 .tag-row {
     display: flex;
     align-items: center;
+    flex-wrap: wrap;
+    gap: 0.4rem;
 }
 
 .report-button {

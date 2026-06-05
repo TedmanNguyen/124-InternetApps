@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { NavLink, Outlet, useNavigate } from 'react-router-dom'
 import SearchBar from './SearchBar'
 import { useStudents } from '../context/StudentContext'
@@ -5,6 +6,7 @@ import { useStudents } from '../context/StudentContext'
 export default function Layout() {
   const navigate = useNavigate()
   const { userIsAdmin, currentUser, logout } = useStudents()
+  const [menuOpen, setMenuOpen] = useState(false)
 
   const handleSearch = (searchTerm) => {
     navigate(`/search?q=${encodeURIComponent(searchTerm)}`)
@@ -13,31 +15,46 @@ export default function Layout() {
   const handleLogout = () => {
     logout()
     navigate('/login')
+    setMenuOpen(false)
   }
+
+  const closeMenu = () => setMenuOpen(false)
 
   return (
     <div className="app-shell">
       <header className="app-header">
         <div className="header-row">
-          <NavLink to="/" className="brand">
+          <NavLink to="/" className="brand" onClick={closeMenu}>
             Rate My Peer
           </NavLink>
 
-          <div className="header-links">
+          <button
+            type="button"
+            className="hamburger"
+            aria-label="Toggle navigation"
+            aria-expanded={menuOpen}
+            onClick={() => setMenuOpen((o) => !o)}
+          >
+            <span />
+            <span />
+            <span />
+          </button>
+
+          <nav className={`header-links${menuOpen ? ' open' : ''}`}>
             {userIsAdmin() && (
-              <NavLink to="/admin-dashboard" className="header-link">
+              <NavLink to="/admin-dashboard" className="header-link" onClick={closeMenu}>
                 Admin Dashboard
               </NavLink>
             )}
-            <NavLink to="/" end className="header-link">
+            <NavLink to="/" end className="header-link" onClick={closeMenu}>
               Search
             </NavLink>
-            <NavLink to="/help" end className="header-link">
+            <NavLink to="/help" end className="header-link" onClick={closeMenu}>
               Help
             </NavLink>
             {currentUser ? (
               <>
-                <NavLink to={`/student/${currentUser.id}`} className="header-link">
+                <NavLink to={`/student/${currentUser.id}`} className="header-link" onClick={closeMenu}>
                   Profile
                 </NavLink>
                 <button type="button" className="ghost-button" onClick={handleLogout}>
@@ -45,11 +62,11 @@ export default function Layout() {
                 </button>
               </>
             ) : (
-              <NavLink to="/login" className="header-link">
+              <NavLink to="/login" className="header-link" onClick={closeMenu}>
                 Login
               </NavLink>
             )}
-          </div>
+          </nav>
         </div>
 
         <SearchBar

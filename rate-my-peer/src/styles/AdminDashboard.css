@@ -14,6 +14,56 @@
     display: flex;
     gap: 1rem;
     align-items: center;
+    position: relative;
+}
+
+.status-filter-dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.status-filter-menu {
+    position: absolute;
+    top: calc(100% + 0.4rem);
+    left: 0;
+    background: var(--white);
+    border: 1px solid var(--slate-200);
+    border-radius: 10px;
+    box-shadow: var(--shadow);
+    min-width: 180px;
+    z-index: 200;
+    padding: 0.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.status-filter-option {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.45rem 0.6rem;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    font-weight: 600;
+    user-select: none;
+}
+
+.status-filter-option input[type="checkbox"] {
+    accent-color: var(--navy);
+    width: 15px;
+    height: 15px;
+    cursor: pointer;
+    flex-shrink: 0;
+}
+
+.status-filter-menu-footer {
+    margin-top: 0.4rem;
+    padding-top: 0.4rem;
+    border-top: 1px solid var(--slate-200);
+    display: flex;
+    justify-content: flex-end;
 }
 
 .apply-filter-button {
@@ -33,4 +83,24 @@
 .apply-filter-button:active {
     transform: scale(1.15);
     transition: transform 0.1s ease;
+}
+
+@media (max-width: 600px) {
+  .admin-tabs {
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .admin-tabs a {
+    flex: 1 1 auto;
+    text-align: center;
+  }
+
+  .filter-container {
+    flex-wrap: wrap;
+  }
+
+  .status-filter {
+    flex-wrap: wrap;
+  }
 }
