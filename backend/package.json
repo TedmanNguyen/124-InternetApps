@@ -1,22 +1,24 @@
 {
-  "name": "backend",
-  "version": "1.0.0",
-  "description": "backend for rate my per",
-  "keywords": [
-    "peer"
-  ],
-  "license": "ISC",
-  "author": "group 14",
-  "type": "commonjs",
-  "main": "index.js",
+  "name": "rate-my-peer-server",
+  "version": "0.1.0",
+  "description": "Express + MongoDB backend for Rate My Peer",
+  "type": "module",
+  "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "nodemon server.js",
+    "start": "node server.js",
+    "seed": "node src/seed/seedDb.js"
   },
   "dependencies": {
-    "cors": "^2.8.6",
-    "dotenv": "^17.4.2",
-    "express": "^5.2.1",
-    "mongodb": "^7.2.0",
-    "mongoose": "^9.6.2"
+    "bcryptjs": "^2.4.3",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "express-async-errors": "^3.1.1",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^8.5.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.4"
   }
 }
