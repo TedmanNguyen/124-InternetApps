@@ -12,14 +12,16 @@ export function AdminProvider({ children }) {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState(null)
 
-  const refresh = useCallback(async (params = {}) => {
+  const refresh = useCallback(async () => {
     setLoading(true)
     setError(null)
     try {
-      const { reports } = await api.reports.list(params)
+      const { reports } = await api.reports.list()
+      console.log(reports)
       setReports(reports)
       return reports
     } catch (err) {
+      console.log("error occurred")
       setError(err.message)
       throw err
     } finally {

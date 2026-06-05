@@ -40,11 +40,15 @@ export default function AdminCard({ report }) {
       return
     }
     let cancelled = false
-    fetchAllReviews().then(() => {
-      if (!cancelled) setReview(reviewsById[report.reviewId] || null)
-    }).catch(() => {})
+    fetchAllReviews()
+      .then((reviews) => {
+        if (!cancelled) setReview(reviews.find((r) => r.id === report.reviewId) ?? null)
+      })
+      .catch(() => {
+        if (!cancelled) setReview(null)
+      })
     return () => { cancelled = true }
-  }, [report.reviewId, reviewsById, fetchAllReviews])
+  }, [report.reviewId, fetchAllReviews])
 
   useEffect(() => {
     if (!review?.reviewerId) return

@@ -14,6 +14,8 @@ export default function ReportsView() {
     refresh({ status: appliedFilter.join(',') }).catch(() => {})
   }, [appliedFilter, refresh])
 
+  console.log(reports)
+
   const filteredReports = useMemo(
     () => reports.filter((r) => appliedFilter.includes(r.status)),
     [reports, appliedFilter],

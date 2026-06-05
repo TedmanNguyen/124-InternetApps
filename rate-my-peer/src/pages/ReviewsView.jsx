@@ -23,7 +23,7 @@ export default function ReviewsView() {
 
   // Refetch when search or role filter changes — backend does the heavy lifting.
   useEffect(() => {
-    if (!currentUser?.isAdmin) return
+    // if (!currentUser?.isAdmin) return
     let cancelled = false
     setLoading(true)
     fetchAllReviews({

@@ -14,7 +14,19 @@ router.post('/signup', async (req, res) => {
   if (password.length < 8) throw new HttpError(400, 'Password must be at least 8 characters')
 
   const exists = await Student.findOne({ email: email.toLowerCase() })
-  if (exists) throw new HttpError(409, 'Email already registered')
+  if (exists) {
+    if (exists.passwordHash !== null) throw new HttpError(409, 'Email already registered')
+
+    // Peer-only profile — claim it by setting credentials and updating info.
+    exists.firstName = firstName
+    exists.lastName = lastName
+    exists.major = major || exists.major
+    await exists.setPassword(password)
+    await exists.save()
+
+    const token = signToken(exists)
+    return res.status(200).json({ token, user: exists.toPublic() })
+  }
 
   const student = new Student({
     firstName,

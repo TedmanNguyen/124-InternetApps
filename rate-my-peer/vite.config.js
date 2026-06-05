@@ -7,9 +7,9 @@ export default defineConfig({
   server: {
     proxy: {
       // Anything starting with /api is forwarded to the Express server.
-      // Run `npm run dev` in /server in a second terminal.
+      // Run `npm run dev` in /backend in a second terminal.
       '/api': {
-        target: 'http://localhost:5000',
+        target: 'http://localhost:5001',
         changeOrigin: true,
       },
     },

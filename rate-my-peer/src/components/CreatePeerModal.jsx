@@ -5,7 +5,7 @@ import { majorOptions } from '../data/mockStudents'
 
 export default function CreatePeerModal({ searchQuery, isEmailSearch, onClose }) {
   const navigate = useNavigate()
-  const { addStudent, students, getStudentByEmail } = useStudents()
+  const { addStudent } = useStudents()
 
   // Pre-populate based on search type
   const initialFormData = useMemo(() => {
@@ -75,13 +75,6 @@ export default function CreatePeerModal({ searchQuery, isEmailSearch, onClose })
       newErrors.major = 'Major/Field of Study is required'
     }
 
-    // Check for duplicates by email
-    const existingStudent = getStudentByEmail(formData.email)
-    if (existingStudent) {
-      setDuplicateFound(existingStudent)
-      return false
-    }
-
     setErrors(newErrors)
     return Object.keys(newErrors).length === 0
   }
@@ -107,8 +100,12 @@ export default function CreatePeerModal({ searchQuery, isEmailSearch, onClose })
       onClose()
       navigate(`/student/${newStudent.id}/review`)
     } catch (error) {
-      console.error('Error creating student profile:', error)
-      setErrors({ submit: 'Failed to create profile. Please try again.' })
+      if (error.status === 409 && error.data?.student) {
+        setDuplicateFound(error.data.student)
+      } else {
+        console.error('Error creating student profile:', error)
+        setErrors({ submit: 'Failed to create profile. Please try again.' })
+      }
     } finally {
       setIsSubmitting(false)
     }

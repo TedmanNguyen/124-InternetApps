@@ -1,7 +1,6 @@
 import { useNavigate, useParams } from 'react-router-dom'
 import ReviewForm from '../components/ReviewForm'
 import { useStudents } from '../context/StudentContext'
-import { getDisplayName } from '../utils/studentMetrics'
 
 export default function WriteReviewPage() {
   const { studentId } = useParams()
@@ -14,8 +13,8 @@ export default function WriteReviewPage() {
     return <p className="empty-state">Student profile not found.</p>
   }
 
-  const handleSubmit = (reviewData) => {
-    addReview({
+  const handleSubmit = async (reviewData) => {
+    await addReview({
       studentId: student.id,
       ...reviewData,
     })
@@ -25,7 +24,11 @@ export default function WriteReviewPage() {
 
   return (
     <section className="page">
-      <ReviewForm studentName={getDisplayName(student)} onSubmit={handleSubmit} />
+      <ReviewForm
+        student={student}
+        onClose={() => navigate(-1)}
+        onSubmit={handleSubmit}
+      />
     </section>
   )
 }
