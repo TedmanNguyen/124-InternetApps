@@ -53,3 +53,11 @@ Here is a link to the demo video showcasing key features of our application: htt
 ## Deployed Webapp Link
 
 Here is a link to the deployed Rate My Peer website: http://rate-my-peer-frontend.s3-website.us-east-2.amazonaws.com/student/6a22520ce35a55bae5d341ac
+
+## Jira Board Link
+
+Here is a link to our Jira board: https://uci-team-al0gwc3b.atlassian.net/jira/software/projects/SCRUM/list?jql=project+%3D+SCRUM+ORDER+BY+created+DESC&atlOrigin=eyJpIjoiYzIzZjE4OTFhMmJjNGE5YmI3NGIwMjk3MTkxOGNkZGEiLCJwIjoiaiJ9
+
+## Google Doc Link
+
+Here is a link to a Google doc for the project, containing things such as our C4 diagrams: https://docs.google.com/document/d/1tTTVUfssaNrAS6zZNgPiadpNLJ3erGda9qDvQ4O9430/edit?usp=sharing
