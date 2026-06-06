@@ -45,3 +45,7 @@ npm run lint
 
 Mock student data currently lives in `src/data/mockStudents.js`.
 You can swap this to API data later with minimal changes through `src/context/StudentContext.jsx`.
+
+## Demo Video Link
+
+Here is a link to the demo video showcasing key features of our application: https://youtu.be/l8USIr6-W4Q
