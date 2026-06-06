@@ -49,3 +49,7 @@ You can swap this to API data later with minimal changes through `src/context/St
 ## Demo Video Link
 
 Here is a link to the demo video showcasing key features of our application: https://youtu.be/l8USIr6-W4Q
+
+## Deployed Webapp Link
+
+Here is a link to the deployed Rate My Peer website: http://rate-my-peer-frontend.s3-website.us-east-2.amazonaws.com/student/6a22520ce35a55bae5d341ac
